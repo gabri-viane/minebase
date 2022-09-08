@@ -1,0 +1,9 @@
+{
+    "Lua.diagnostics.globals": [
+        "minetest",
+        "ItemStack",
+        "ChatCmdBuilder",
+        "core",
+        "dump"
+    ]
+}
