@@ -1,5 +1,6 @@
 dofile(minetest.get_modpath('minebase') .. '/scripts/comms/setup_commons.lua');
 dofile(minetest.get_modpath('minebase') .. '/scripts/comms/colors.lua');
+dofile(minetest.get_modpath('minebase') .. '/scripts/comms/screen.lua');
 dofile(minetest.get_modpath('minebase') .. '/scripts/comms/commands.lua');
 
 minebase.functions.stringToTokens = function(string)
@@ -8,6 +9,41 @@ minebase.functions.stringToTokens = function(string)
         ps[#ps + 1] = w;
     end
     return ps;
+end
+
+minebase.functions.warpString = function(string_to_warp, max_length)
+    return minebase.functions.warpString_CN(minebase.functions.splitString(string_to_warp), max_length);
+end
+
+minebase.functions.warpString_CN = function(warped, max_length, res, index, call)
+    res = res or {};
+    local counter = 0;
+    index = index or 1;
+    call = call or 0;
+    for i = index, #warped do
+        local word = warped[i];
+        counter = counter + word:len();
+        if counter < max_length then
+            counter = counter + 1;
+            res[#res + 1] = word
+        else
+            warped[i] = '\n' .. warped[i];
+            call = minebase.functions.warpString_CN(warped, max_length, res, i, call + 1)[2];
+            break;
+        end
+    end
+    return { table.concat(res, " "), call };
+end
+
+minebase.functions.splitString = function(inputstr, sep)
+    if sep == nil then
+        sep = "%s"
+    end
+    local t = {}
+    for str in string.gmatch(inputstr, "([^" .. sep .. "]+)") do
+        t[#t + 1] = str;
+    end
+    return t
 end
 
 minebase.functions.convertStringTo = function(from, to)

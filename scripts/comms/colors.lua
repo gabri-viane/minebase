@@ -1,21 +1,26 @@
 minebase.colors.list = {
     red = {
+        text = 0xFF0000,
         light = '#FF0000FF',
         dark = '#B20000FF'
     },
     orange = {
+        text = 0xFFA500,
         light = '#FFA500FF',
         dark = '#B27300FF'
     },
     yellow = {
+        text = 0xFFFF00,
         light = '#FFFF00FF',
         dark = '#B2B200FF'
     },
     green = {
+        text = 0x8fce00,
         light = '#8fce00ff',
         dark = '#5b8300ff'
     },
     sky_blue = {
+        text = 0x2986cc,
         light = '#2986ccff',
         dark = '#206ba3ff'
     },
@@ -24,18 +29,22 @@ minebase.colors.list = {
         dark = '#00008eff'
     },
     violet = {
+        text = 0xee82ee,
         light = '#ee82eeff',
         dark = '#a65ba6ff'
     },
     purple = {
+        text = 0x800080,
         light = '#800080ff',
         dark = '#660066ff'
     },
     white = {
+        text = 0xe5e5e5,
         light = '#ffffffff',
-        dark = '#e5e5e5f'
+        dark = '#e5e5e5ff'
     },
     black = {
+        text = 0x191919,
         light = '#191919ff',
         dark = '#000000ff'
     },
@@ -66,6 +75,10 @@ end
 --Ritorna il colore richiesto come numero se esistente altrimenti la variante light del colore black
 minebase.colors.functions.getColorHex = function(color_name, type)
     return tonumber(minebase.colors.functions.getColorString(color_name, type):sub(2, 9), 16);
+end
+
+minebase.colors.functions.colorToHex = function(color_string)
+    return tonumber(color_string:sub(2, 7), 16);
 end
 
 --Aggiunge un colore, ritorna il colore aggiunto se è stato inserito altrimenti false
