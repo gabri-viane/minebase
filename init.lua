@@ -5,33 +5,36 @@ dofile(minetest.get_modpath("minebase") .. "/scripts/comms/commons.lua");
 dofile(minetest.get_modpath("minebase") .. "/scripts/HUD/HUD.lua");
 dofile(minetest.get_modpath("minebase") .. "/scripts/effects/effects.lua");
 
+dofile(minetest.get_modpath("minebase") .. "/scripts/registers.lua");
 
 dofile(minetest.get_modpath("minebase") .. "/scripts/p.lua");
 
-minebase.commands.functions.addCommand("minebase", "test",
+minebase.commands.functions.addCommand("minebase", "test1",
     {}, {},
     function(name, params)
-        local container = minebase.HUD.complex:newInfoBox(minetest.get_player_by_name(name), "infobox_test_1",
-            "Test info box 1",
-            "This is a text box in middle-right screen position. Automatic warp to the text.",
-            minebase.screen.p.middle.right,
-            minebase.colors.list.purple.dark, minebase.colors.list.white.dark);
-        container:setOffset(-100, 0);
-        container = minebase.HUD.complex:newInfoBox(minetest.get_player_by_name(name), "infobox_test_2",
-            "Info box 2",
-            "This is a another text box in bottom-left screen position.",
-            minebase.screen.p.bottom.left,
-            minebase.colors.list.orange.light, minebase.colors.list.white.light);
-        container:setOffset(100, -50);
-        container = minebase.HUD.complex:newInfoBox(minetest.get_player_by_name(name), "infobox_test_3",
-            "Info-box 3",
-            "Bla bla bla",
-            minebase.screen.p.top.middle,
-            minebase.colors.list.green.dark, minebase.colors.list.white.light);
-        container:setOffset(0, 20);
-        minetest.after(10, function(a)
-            container:move(minebase.screen.p.middle.middle)
-        end)
+        local player = minetest.get_player_by_name(name);
+        minebase.m.addEffectToPlayer(player, minebase.effects.list.jumpness, 20, 3);
+        --local container = minebase.HUD.complex:newEffectList(player);
+        --container:appendEffect({ effect = minebase.effects.list.jumpness, duration = 9999, id_amp = 3 });
+        --container:appendEffect({ effect = minebase.effects.list.speedness, duration = 9999, id_amp = 3 });
+        --inebase.HUD.complex:newEffectBar(player,"test",{ effect = minebase.effects.list.jumpness, duration = 9999, id_amp = 3 },minebase.screen.p.bottom.right);
+        return "";
+    end
+)
+minebase.commands.functions.addCommand("minebase", "test2",
+    {}, {},
+    function(name, params)
+        local player = minetest.get_player_by_name(name);
+        minebase.m.addEffectToPlayer(player, minebase.effects.list.jumpness, 40, 3);
+        return "";
+    end
+)
+
+minebase.commands.functions.addCommand("minebase", "test3",
+    {}, {},
+    function(name, params)
+        local player = minetest.get_player_by_name(name);
+        minebase.m.addEffectToPlayer(player,minebase.effects.list.jumpness, 10, 4 );
         return "";
     end
 )

@@ -27,19 +27,6 @@ minebase.effects.functions.addEffectsToPlayer = function(player)
         }
     };
 end
---Giocatore si unisce
-minetest.register_on_joinplayer(function(player, last_login)
-    minebase.effects.functions.addEffectsToPlayer(player);
-end);
---Giocatore respawn
-minetest.register_on_respawnplayer(function(player)
-    minebase.effects.functions.removeAll(player);
-    minebase.effects.functions.addEffectsToPlayer(player);
-end)
-minetest.register_on_leaveplayer(function(player, timed_out)
-    minebase.effects.functions.removeAll(player);
-    minebase.effects.players[player] = nil;
-end)
 --[[
     LISTA DI TUTTI GLI EFFETTI
 
@@ -99,7 +86,7 @@ minebase.effects.list = {
             { attr = 'III', value = 3.2 },
             { attr = 'IV', value = 4.3 }
         },
-        icon = "minebase_jumpness_icon.png"
+        icon = "minebase_jump_boost.png"
     },
     night_vision = {
         id = 4,

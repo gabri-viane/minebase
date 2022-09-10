@@ -57,7 +57,6 @@ function minebase.screen:addToScreen(container)
     local indx = #player_screen.all + 1;
     player_screen.all[indx] = container;
     player_screen.named[container.name] = container;
-    minetest.chat_send_player(player:get_player_name(), "Added to screen");
     container.screen_pos = { minebase.screen:assignToScreen(container), indx };
 end
 
@@ -65,6 +64,7 @@ function minebase.screen:removeFromScreen(container)
     local player = container.owner;
     local player_screen = self.containers[player];
     player_screen.all[container.screen_pos[2]] = nil;
+    player_screen.named[container.name] = nil;
     container.screen_pos = nil;
 end
 
@@ -94,21 +94,3 @@ function minebase.screen:refreshScreen(container)
 
     container.screen_pos[1] = minebase.screen:assignToScreen(container);
 end
-
-minetest.register_globalstep(function(dtime)
-    local containers = minebase.screen.containers;
-    for _, pl_screen in pairs(containers) do
-        for i = 1, #pl_screen.all do
-            minebase.HUD.functions.refreshContainer(pl_screen.all[i]);
-        end
-    end
-end);
-
---Giocatore si unisce
-minetest.register_on_joinplayer(function(player, last_login)
-    minebase.screen:enableScreen(player);
-end);
---Giocatore abbandona
-minetest.register_on_leaveplayer(function(player, timed_out)
-    minebase.screen:disableScreen(player);
-end)

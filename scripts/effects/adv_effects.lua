@@ -22,8 +22,8 @@ minebase.commands.functions.addCommand(
         if params.name then
             local effect = minebase.effects.list[params.name];
             if effect then
-                minebase.effects.functions.add_effect(minetest.get_player_by_name(name), effect, params.amplifier,
-                    params.time);
+                minebase.m.addEffectToPlayer(minetest.get_player_by_name(name), effect,
+                    params.time, params.amplifier);
                 return minebase.colors.functions.setTextColor({
                     { text = effect.name, font_color = minebase.colors.list.sky_blue.light },
                     { text = " has been given to " },

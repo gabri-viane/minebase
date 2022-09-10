@@ -11,6 +11,13 @@ minebase.functions.stringToTokens = function(string)
     return ps;
 end
 
+minebase.functions.numberToTimer = function(seconds)
+    seconds = math.floor(seconds);
+    local minutes = math.floor(seconds / 60);
+    seconds = math.floor(seconds - minutes * 60);
+    return minutes .. ":" .. seconds;
+end
+
 minebase.functions.warpString = function(string_to_warp, max_length)
     return minebase.functions.warpString_CN(minebase.functions.splitString(string_to_warp), max_length);
 end

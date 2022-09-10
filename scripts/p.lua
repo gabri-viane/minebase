@@ -50,7 +50,7 @@ end
 --Add a color to the list #minebase.colors.list, a color can be a string or a function
 --@param name The name to get the color back
 --@param variant The type of the color
---@pram value A #RGBA string (eg.: "#123456AF") or a function that returns an #RGBA string 
+--@pram value A #RGBA string (eg.: "#123456AF") or a function that returns an #RGBA string
 minebase.m.addColor = function(name, variant, value)
     minebase.colors.functions.addColor(name, variant, value);
 end
@@ -73,6 +73,7 @@ end
 ]]
 --@param privileges A list of privileges
 --@param description A description of the command
-minebase.m.addCommand = function(mod_name, command_alias, param_list, callback_function, privileges,  description)
-    minebase.commands.functions.addCommand(mod_name,command_alias,param_list,privileges,callback_function,description);
+minebase.m.addCommand = function(mod_name, command_alias, param_list, callback_function, privileges, description)
+    minebase.commands.functions.addCommand(mod_name, command_alias, param_list, privileges, callback_function,
+        description);
 end

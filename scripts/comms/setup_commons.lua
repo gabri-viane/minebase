@@ -23,6 +23,7 @@ minebase.commands.list = {};
 minebase.HUD = {};
 minebase.HUD.functions = {};
 minebase.HUD.complex = {};
+minebase.HUD.tx = {};
 
 --Contiene tutti i dati sugli effetti
 minebase.effects = {};
