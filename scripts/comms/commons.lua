@@ -3,6 +3,12 @@ dofile(minetest.get_modpath('minebase') .. '/scripts/comms/colors.lua');
 dofile(minetest.get_modpath('minebase') .. '/scripts/comms/screen.lua');
 dofile(minetest.get_modpath('minebase') .. '/scripts/comms/commands.lua');
 
+function minebase.functions:registerTx (to_subscribe)
+    if to_subscribe.dt and to_subscribe.finish and to_subscribe.tick then
+        self.tx[#self.tx+1] = to_subscribe;
+    end
+end
+
 minebase.functions.stringToTokens = function(string)
     local ps = {};
     for w in string:gmatch("([%a%d_-]+)") do
@@ -86,3 +92,5 @@ minebase.commands.functions.addCommand("minebase", "minebase", {
             end
         end
     end)
+
+

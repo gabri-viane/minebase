@@ -18,35 +18,13 @@ minebase.effects.functions.isEffectPresent = function(player, effect)
     return { toadd = false, key = nil };
 end
 
---Sposta se presenti le ulteriori HUD nelle nuove posizioni
-minebase.effects.functions.refreshHUDPosition = function(player)
-    if player ~= nil then
-        local player_comp = minebase.effects.players[player];
-        local y_position = -30;
-        for _, data in pairs(player_comp.effects) do
-            player:hud_change(data.hud_text, "offset", { x = -90, y = y_position });
-            player:hud_change(data.hud_image, "offset", { x = -170, y = y_position });
-            y_position = y_position - 50;
-        end
-    end
-end
-
-minebase.effects.functions.refreshHUDEffectData = function(player, effect)
-    if player ~= nil then
-        local player_comp = minebase.effects.players[player];
-        local data = player_comp.effects[effect]
-        player:hud_change(data.hud_text, "text",
-            effect.name .. " " .. (effect.amplifiers[data.amplifier] or effect.amplifiers[1]).attr);
-    end
-end
-
 minebase.effects.functions.removeAll = function(player)
     if player ~= nil then
         local player_comp = minebase.effects.players[player];
+        local player_effects_hud = minebase.screen:get(player, "EFFECT_HUD");
         for key, data in pairs(player_comp.effects) do
             if data then
-                player:hud_remove(data.hud_text);
-                player:hud_remove(data.hud_image);
+                player_effects_hud:removeEffect(key);
                 data.job:cancel();
             end
             key:reset_effect(player);
@@ -65,7 +43,7 @@ minebase.effects.functions.add_effect = function(player, effect, id_amplifier, s
             container:appendEffect({ effect = effect, id_amp = id_amplifier, duration = seconds });
 
             --Eseguo la funzione dell'effetto
-            effect:exec_effect(player, id_amplifier);
+            effect:exec_effect(player, id_amplifier, seconds);
 
             --Imposto il timer per rimuovere la HUD
             local job = minetest.after(seconds,
@@ -95,7 +73,7 @@ minebase.effects.functions.add_effect = function(player, effect, id_amplifier, s
                         minebase.effects.functions.remove_effect(player, effect);
                     end
                 );
-            elseif effect_data.amplifier < id_amplifier then --Altrimenti annulla l'effetto precedente e metti quello nuovo
+            elseif effect_data.amplifier < id_amplifier and effect.amplifiers[id_amplifier] then --Altrimenti annulla l'effetto precedente e metti quello nuovo
                 effect_data.job:cancel();
                 effect_data.amplifier = id_amplifier;
 

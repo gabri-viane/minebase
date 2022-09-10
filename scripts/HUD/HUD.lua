@@ -49,27 +49,27 @@ function minebase.HUD.complex:newEffectBar(player, name, effect_applied, positio
     return container;
 end
 
-function minebase.HUD.complex:newEffectList(player)
+--direction a -1 gli elementi vengono aggiunti verso il basso, con 1 verso l'altro
+function minebase.HUD.complex:newEffectList(player, direction)
     local container = minebase.HUD.functions.createContainer(player, "EFFECT_HUD",
         minebase.screen.p.bottom.right, { x = -128, y = -32 });
-
+    container.direction = direction;
     --Abbassa tutti i container
     function container:fixElements(i_rem)
         for i = i_rem, #self.elements do
             local elem = self.elements[i].drawable;
             if elem then
-                elem:addOffset(0, 64); --sposta in basso l'hud
+                elem:addOffset(0, self.direction * 64); --sposta in basso l'hud
             end
         end
     end
 
     function container:appendEffect(effect_applied)
         local ef_pl = minebase.effects.players[self.owner];
-        local y_offset = -(64 * ef_pl.hud_y_multiplyer);
+        local y_offset = -self.direction * (64 * ef_pl.hud_y_multiplyer);
         ef_pl.hud_y_multiplyer = ef_pl.hud_y_multiplyer + 1;
-        --effect_applied.effect:exec_effect(self.owner, effect_applied.id_amp);
 
-        local cont = minebase.HUD.complex:newEffectBar(self.owner, "eff_" .. effect_applied.effect.name, effect_applied,
+        local cont = minebase.HUD.complex:newEffectBar(self.owner, "eff_" .. effect_applied.effect.id, effect_applied,
             { x = 1, y = 1 });
 
         cont:addOffset(0, y_offset);
@@ -81,8 +81,10 @@ function minebase.HUD.complex:newEffectList(player)
             finish = function()
                 cont:delete();
                 local rem_id = container:removeElement(cont.name);
-                container:fixElements(rem_id);
-                ef_pl.hud_y_multiplyer = ef_pl.hud_y_multiplyer - 1;
+                if rem_id then
+                    container:fixElements(rem_id);
+                    ef_pl.hud_y_multiplyer = ef_pl.hud_y_multiplyer - 1;
+                end
             end,
             tick = function(me)
                 cont:updateElement('timer',
@@ -93,16 +95,23 @@ function minebase.HUD.complex:newEffectList(player)
     end
 
     function container:refreshData(effect_applied)
-        local cont = self:get("eff_" .. effect_applied.effect.name).drawable;
-        cont.datax.dt = effect_applied.duration;
-        local text_id = cont:getID('text');
-        local _l = effect_applied.effect.amplifiers;
-        local txt = effect_applied.effect.name .. " " .. (_l[effect_applied.id_amp] or _l[1]).attr;
-        cont:updateElement(text_id,{{name="text",value=txt}});
+        local el = self:get("eff_" .. effect_applied.effect.id);
+        if el then
+            local cont = el.drawable;
+            cont.datax.dt = effect_applied.duration;
+            local text_id = cont:getID('text');
+            local _l = effect_applied.effect.amplifiers;
+            local txt = effect_applied.effect.name .. " " .. (_l[effect_applied.id_amp] or _l[1]).attr;
+            cont:updateElement(text_id, { { name = "text", value = txt } });
+        end
     end
 
     function container:removeEffect(effect)
-
+        local el = self:get("eff_" .. effect.id);
+        if el then
+            local cont = el.drawable;
+            cont.datax.dt = 0;
+        end
     end
 
     return container;

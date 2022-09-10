@@ -1,24 +1,3 @@
---Creo le funzioni base per il lavoro per l'HUD
-minetest.register_globalstep(function(dtime)
-    local tx = minebase.HUD.tx;
-    local rem = {}
-    for i = 1, #tx do
-        local el = tx[i];
-        if el then
-            el.dt = el.dt - dtime;
-            if el.dt <= 0 then
-                el:finish();
-                rem[#rem + 1] = i;
-            else
-                el:tick();
-            end
-        end
-    end
-    for i = 1, #rem do
-        table.remove(tx, rem[i]);
-    end
-end);
-
 minebase.HUD.functions.newText = function(text, scale, offset, color, direction, alignment, size, style, z_index)
     return {
         hud_elem_type = "text",
@@ -264,7 +243,7 @@ minebase.HUD.functions.createContainer = function(player, name, position, offset
 
             return id;
         end
-        return 1;
+        return nil;
     end
 
     minebase.screen:addToScreen(container);

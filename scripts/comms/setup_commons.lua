@@ -7,6 +7,7 @@ minebase.statics.privileges = {
 
 --Contiente tutte le funzioni di utilizzo vario
 minebase.functions = {};
+minebase.functions.tx = {};
 
 --Contiene tutti i dati sui colori
 minebase.colors = {};

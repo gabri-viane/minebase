@@ -21,7 +21,8 @@ minebase.effects.functions.addEffectsToPlayer = function(player)
             speed = nil,
             jump = nil,
             gravity = nil,
-            vision = nil
+            vision = nil,
+            regen = nil
         },
         effects = {
         }
@@ -53,7 +54,7 @@ end
 ]]
 minebase.effects.list = {
     slowness = {
-        id = 1,
+        id = 'slowness',
         owner = "minebase",
         name = 'Slowness',
         amplifiers = {
@@ -64,8 +65,8 @@ minebase.effects.list = {
         },
         icon = "minebase_slowness_icon.png"
     },
-    speedness = {
-        id = 2,
+    speed_boost = {
+        id = 'speed_boost',
         owner = "minebase",
         name = 'Speed',
         amplifiers = {
@@ -76,20 +77,20 @@ minebase.effects.list = {
         },
         icon = "minebase_speedness_icon.png"
     },
-    jumpness = {
-        id = 3,
+    jump_boost = {
+        id = 'jump_boost',
         owner = "minebase",
-        name = 'Jumpness',
+        name = 'Jump Boost',
         amplifiers = {
             { attr = 'I', value = 1 },
             { attr = 'II', value = 2.1 },
             { attr = 'III', value = 3.2 },
             { attr = 'IV', value = 4.3 }
         },
-        icon = "minebase_jump_boost.png"
+        icon = "minebase_jump_boost_icon.png"
     },
     night_vision = {
-        id = 4,
+        id = 'night_vision',
         owner = "minebase",
         name = 'Night Vision',
         amplifiers = {
@@ -98,10 +99,23 @@ minebase.effects.list = {
             { attr = 'III', value = 2 }
         },
         icon = "minebase_nightvision_icon.png"
+    },
+    regeneration = {
+        id = 'regeneration',
+        owner = 'minebase',
+        name = 'Regeneration',
+        amplifiers = {
+            { attr = 'I', value = 1 },
+            { attr = 'II', value = 2.1 },
+            { attr = 'III', value = 3.2 },
+            { attr = 'IV', value = 4.3 },
+            { attr = 'V', value = 4.7 }
+        },
+        icon = "minebase_regeneration_icon.png"
     }
 };
 
-function minebase.effects.list.speedness:exec_effect(player, id_amplifier)
+function minebase.effects.list.speed_boost:exec_effect(player, id_amplifier)
     id_amplifier = id_amplifier or 1;
     local amplifier = self.amplifiers[id_amplifier] or self.amplifiers[1];
     minebase.effects.players[player].modify_owner.speed = self;
@@ -111,7 +125,7 @@ function minebase.effects.list.speedness:exec_effect(player, id_amplifier)
     });
 end
 
-function minebase.effects.list.speedness:reset_effect(player)
+function minebase.effects.list.speed_boost:reset_effect(player)
     if minebase.effects.players[player].modify_owner.speed == self then --Solo se sono l'ultimo posso resettare
         player:set_fov(0, false, 0.2);
         player:set_physics_override({
@@ -138,7 +152,7 @@ function minebase.effects.list.slowness:reset_effect(player)
     end
 end
 
-function minebase.effects.list.jumpness:exec_effect(player, id_amplifier)
+function minebase.effects.list.jump_boost:exec_effect(player, id_amplifier)
     local amplifier = self.amplifiers[id_amplifier or 1] or self.amplifiers[1];
     minebase.effects.players[player].modify_owner.jump = self;
     player:set_physics_override({
@@ -146,7 +160,7 @@ function minebase.effects.list.jumpness:exec_effect(player, id_amplifier)
     });
 end
 
-function minebase.effects.list.jumpness:reset_effect(player)
+function minebase.effects.list.jump_boost:reset_effect(player)
     if minebase.effects.players[player].modify_owner.jump == self then --Solo se sono l'ultimo posso resettare
         player:set_physics_override({
             jump = 1
@@ -163,5 +177,20 @@ end
 function minebase.effects.list.night_vision:reset_effect(player)
     if minebase.effects.players[player].modify_owner.vision == self then --Solo se sono l'ultimo posso resettare
         player:override_day_night_ratio(nil);
+    end
+end
+
+function minebase.effects.list.regeneration:exec_effect(player, id_amplifier,seconds)
+    local amplifier = self.amplifiers[id_amplifier or 1] or self.amplifiers[1];
+    minebase.effects.players[player].modify_owner.regen = self;
+    minebase.effects.players[player].regen_data = {
+        dt = seconds
+    }
+    --minebase.functions:registerTx
+end
+
+function minebase.effects.list.regeneration:reset_effect(player)
+    if minebase.effects.players[player].modify_owner.regen == self then --Solo se sono l'ultimo posso resettare
+
     end
 end
