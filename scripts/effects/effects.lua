@@ -33,7 +33,7 @@ minebase.effects.functions.removeAll = function(player)
     end
 end
 
-minebase.effects.functions.add_effect = function(player, effect, id_amplifier, seconds, tx_index)
+minebase.effects.functions.add_effect = function(player, effect, id_amplifier, seconds)
     if effect then
         local control_result = minebase.effects.functions.isEffectPresent(player, effect);
         if control_result.toadd then
@@ -99,18 +99,26 @@ minebase.effects.functions.remove_effect = function(player, effect)
     if player_comp then
         local eff = player_comp.effects[effect];
         if eff then
-            --Rimuovi gli HUD
-            --player:hud_remove(eff.hud_text);
-            -- player:hud_remove(eff.hud_image);
             --Imposta l'effetto a nullo
             player_comp.effects[effect] = nil;
             eff = nil;
-            --Sottrai alla y
-            --player_comp.hud_y_multiplyer = player_comp.hud_y_multiplyer - 1;
             --Reset dell'effetto
             effect:reset_effect(player);
-            --Refresh dell'HUD
-            --minebase.effects.functions.refreshHUDPosition(player);
+        end
+    end
+end
+minebase.effects.functions.force_remove_effect = function(player, effect)
+    --Seleziona il giocatore
+    local player_comp = minebase.effects.players[player];
+    if player_comp then
+        local eff = player_comp.effects[effect];
+        if eff then
+            --Imposta l'effetto a nullo
+            player_comp.effects[effect] = nil;
+            eff = nil;
+            --Reset dell'effetto
+            effect:reset_effect(player);
+            minebase.screen:get(player, 'EFFECT_HUD'):removeEffect(effect);
         end
     end
 end

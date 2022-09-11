@@ -4,6 +4,16 @@ minebase.m = {};
 --List of effects available
 minebase.m.effects = minebase.effects.list;
 
+--A container can be registered on a player screen.
+--If it's registered you can get the container back passing
+--the player and the container name.
+--@param player The player you want the screen (userdata)
+--@param container_name The container you want back (string)
+--@returns The container request if exists.
+minebase.m.getPlayerScreen = function(player, container_name)
+    return minebase.screen:get(player, container_name);
+end
+
 --Add effect to a specified player, also handles the HUD
 --@param player The player to apply the effect (userdata)
 --@param effect The effect to use (from the table: #minebase.m.effects or #minebase.effects.list) (table)
@@ -17,7 +27,7 @@ end
 --@param player The player to remove the effect (userdata)
 --@param effect The effect to remove (from the table: #minebase.m.effects or #minebase.effects.list) (table)
 minebase.m.removEffectFromPlayer = function(player, effect)
-    minebase.effects.functions.remove_effect(player, effect);
+    minebase.effects.functions.forcr_remove_effect(player, effect);
 end
 
 --Remove all effects from a specified player, also handles the HUD
@@ -36,6 +46,7 @@ end
     sky_blue...,blue...,
     violet...,purple...
 ]]
+--@returns The color requested or black_light
 minebase.m.getColor = function(color_name)
     local ps = {};
     for w in color_name:gmatch("([^_]+)") do

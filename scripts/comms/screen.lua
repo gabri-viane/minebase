@@ -62,10 +62,12 @@ end
 
 function minebase.screen:removeFromScreen(container)
     local player = container.owner;
-    local player_screen = self.containers[player];
-    player_screen.all[container.screen_pos[2]] = nil;
-    player_screen.named[container.name] = nil;
-    container.screen_pos = nil;
+    if container.screen_pos then
+        local player_screen = self.containers[player];
+        player_screen.all[container.screen_pos[2]] = nil;
+        player_screen.named[container.name] = nil;
+        container.screen_pos = nil;
+    end
 end
 
 function minebase.screen:assignToScreen(container)
@@ -91,6 +93,7 @@ end
 function minebase.screen:refreshScreen(container)
     --Rimuovo il container rispetto a dove era
     --self.containers[player][container.screen_pos[1]][cont_name] = nil;
-
-    container.screen_pos[1] = minebase.screen:assignToScreen(container);
+    if container.screen_pos then
+        container.screen_pos[1] = minebase.screen:assignToScreen(container);
+    end
 end
