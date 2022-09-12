@@ -32,9 +32,17 @@ function minebase.HUD.complex:newBlockBox(player, name, image, position)
         { x = 0, y = 0 }, nil, { x = 0, y = 0 }, 3); --Background Riquadro
     local square_hud = minebase.HUD.functions.newImage("minebase_icon_square.png", { x = 1.4, y = 1.4 },
         { x = 0, y = 0 }, nil, { x = 0, y = 0 }, 4); --Riquadro
-    local img_hud = minebase.HUD.functions.newImage("([inventorycube{"
-        .. image .. "{" .. image .. "{" .. image .. ")^[resize:32x32)", { x = 1.4, y = 1.4 },
-        { x = 0, y = 0 }, nil, { x = 0, y = 0 }, 4); --Effetto
+    local img_hud;
+    if type(image) == "table" then
+        img_hud = minebase.HUD.functions.newImage("([inventorycube{"
+            .. image.top .. "{" .. image.left .. "{" .. image.right .. ")^[resize:32x32)", { x = 1.4, y = 1.4 },
+            { x = 0, y = 0 }, nil, { x = 0, y = 0 }, 4); --Effetto
+    else
+        img_hud = minebase.HUD.functions.newImage("([inventorycube{"
+            .. image .. "{" .. image .. "{" .. image .. ")^[resize:32x32)", { x = 1.4, y = 1.4 },
+            { x = 0, y = 0 }, nil, { x = 0, y = 0 }, 4); --Effetto
+    end
+
     local container = minebase.HUD.functions.createContainer(player, name, position);
     container:addElements({ { name = "background", element = bg_square_hud },
         { name = "square", element = square_hud },
@@ -43,16 +51,33 @@ function minebase.HUD.complex:newBlockBox(player, name, image, position)
 end
 
 function minebase.HUD.complex:newBlockBoxT(player, name, image, position, size)
-    local icon_hud = minebase.HUD.functions.newImage("(minebase_icon_square_background.png^minebase_icon_square.png^(([inventorycube{"
+    local icon_hud;
+
+    if type(image) == "table" then
+        icon_hud= minebase.HUD.functions.newImage("(minebase_icon_square_background.png^minebase_icon_square.png^(([inventorycube{"
         ..
-        image ..
+        image.top ..
         "{" ..
-        image ..
+        image.left ..
         "{" ..
-        image .. ")^[resize:32x32))^[resize:" .. minebase.functions.sizeToString(size or minebase.screen.square.medium_l)
+        image.right .. ")^[resize:32x32))^[resize:" .. minebase.functions.sizeToString(size or minebase.screen.square.medium_l)
         ,
         { x = 1, y = 1 },
         { x = 0, y = 0 }, nil, { x = 0, y = 0 }, 4); --Background+Riquadro+immagine a forma di blocco
+    
+    else
+        icon_hud = minebase.HUD.functions.newImage("(minebase_icon_square_background.png^minebase_icon_square.png^(([inventorycube{"
+            ..
+            image ..
+            "{" ..
+            image ..
+            "{" ..
+            image ..
+            ")^[resize:32x32))^[resize:" .. minebase.functions.sizeToString(size or minebase.screen.square.medium_l)
+            ,
+            { x = 1, y = 1 },
+            { x = 0, y = 0 }, nil, { x = 0, y = 0 }, 4); --Background+Riquadro+immagine a forma di blocco
+    end
     local container = minebase.HUD.functions.createContainer(player, name, position);
     container:addElements({ { name = "icon", element = icon_hud } });
     return container;
@@ -96,7 +121,7 @@ function minebase.HUD.complex:newEffectBarT(player, name, effect_applied, positi
         { x = 30, y = 48 },
         { x = -16, y = 0 }, minebase.colors.list.red.dark, 1, { x = -1, y = 0 }, 1.2, nil, 5); --Timer
     local container = minebase.HUD.functions.createContainer(player, name, position, { x = 0, y = 0 });
-    container:addElements({ { name = "bar", element = bar_hud },
+    container:addElements({ { name = "base", element = bar_hud },
         { name = "text", element = text_hud }, { name = "timer", element = timer_hud } });
 
     return container;
@@ -176,7 +201,7 @@ function minebase.HUD.complex:newBoxBorderT(player, name, position, width, heigh
     local line_h = (height or 2) * 10;
     local bar_w = line_w + 4 * 2; --4*2 = due angoli da 4px
     local bar_h = line_h + 4 * 1; --4*1 = un solo angolo angoli da 4px
-    local bar_top_hud = minebase.HUD.functions.newImage(
+    local border = minebase.HUD.functions.newImage(
         "[combine:" .. bar_w .. "x" .. (bar_h + 4) .. ":" ..
         --Parte linea bordo superiore
         "0,0=minebase_corner_bar_border.png:" .. --spigolo sinistro
@@ -197,7 +222,7 @@ function minebase.HUD.complex:newBoxBorderT(player, name, position, width, heigh
         , { x = 1, y = 1 },
         { x = 0, y = 0 }, nil, { x = 1, y = 1 }, 4); --Background+Riquadro+immagine a forma di blocco
     local container = minebase.HUD.functions.createContainer(player, name, position);
-    container:addElements({ { name = "bar_top", element = bar_top_hud } });
+    container:addElements({ { name = "border", element = border } });
     return container;
 end
 
@@ -206,7 +231,7 @@ function minebase.HUD.complex:newBoxT(player, name, position, width, height)
     local line_h = (height or 2) * 10;
     local bar_w = line_w + 4 * 2; --4*2 = due angoli da 4px
     local bar_h = line_h + 4 * 1; --4*1 = un solo angolo angoli da 4px
-    local bar_top_hud = minebase.HUD.functions.newImage(
+    local box = minebase.HUD.functions.newImage(
         "[combine:" .. bar_w .. "x" .. (bar_h + 4) .. ":" ..
         --background
         "4,4=minebase_bg_base.png\\^[resize\\:" .. line_w .. "x" .. line_h .. ":" ..
@@ -229,7 +254,7 @@ function minebase.HUD.complex:newBoxT(player, name, position, width, height)
         , { x = 1, y = 1 },
         { x = 0, y = 0 }, nil, { x = 1, y = 1 }, 4); --Background+Riquadro+immagine a forma di blocco
     local container = minebase.HUD.functions.createContainer(player, name, position);
-    container:addElements({ { name = "border", element = bar_top_hud, type = "def" } });
+    container:addElements({ { name = "box", element = box} });
     return container;
 end
 

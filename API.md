@@ -457,6 +457,7 @@ You may try yourself all the possibilities.
    * `to_draw` : _boolean_ : internal parameter
    * `to_refresh` : _boolean_ : internal parameter
    * `refresh_callback` : _function_ (optional) : a function called on every update request from the container
+
 ## 2. Methods
 **(ATTENTION: USE container:function and not container.function)**
 1.  ### **getElement**
@@ -480,6 +481,7 @@ You may try yourself all the possibilities.
             drawable={...}--the element to draw
         }
         ```
+
 3. ### **getID**
     ```lua
     function container:getID(nm)
@@ -612,6 +614,176 @@ There are two functions to allow creation of (basic) containers:
     Use this container when you need just one element to box.
 
     
+### Already-built Containers
+Thera are some components already prepared for being used in mods, these components are just containers with elements already in them. You can create components by calling specific methods.<br>
+**Methods that ends with T have all the images and icons boundled in one element to optimize the HUD**, otherwise default methods create components with an element for each image.<br>
+These are allo methods, call them with ":".
+1. ### _newIconBox_
+    This method create a frame containing an image. 
+    ```lua
+    function minebase.HUD.complex:newIconBox(player, name, image, position)
+    ```
+    * `player` : same as `createContainer`
+    * `name` : same as `createContainer`
+    * `image` : the image to show in the frame; optimal texture size: 32x32 with 3px around of transparent border.
+    * `position` : the position on the screen.
+    * returns the container. 
+
+    Container has these default elements:
+    * `background` : the background image
+    * `square` : the border frame around the image
+    * `image` : the image shown
+
+2. ### _newIconBoxT_
+    This method create a frame containing an image.
+    ```lua
+    function minebase.HUD.complex:newIconBoxT(player, name, image, position, size)
+    ```
+    * `player` : same as `createContainer`
+    * `name` : same as `createContainer`
+    * `image` : the image to show in the frame.
+    * `position` : the position on the screen.
+    * `size` : the size in px of the iconBox. Default is `minebase.screen.square.medium_l` . Sizes can be found in: `minebase.screen.square.[size]`
+    * returns the container.
+
+    Container has these default elements:
+    * `icon` : the background image + the border frame around the image + the image shown
+
+    ![IconBox](https://imgur.com/ecKRL7M)
+
+3. ### _newBlockBox_
+    This method create a frame containing a representation of a block (top,left and right \\|/ ).
+    ```lua
+    function minebase.HUD.complex:newBlockBox(player, name, image, position)
+    ```
+    * `player` : same as `createContainer`
+    * `name` : same as `createContainer`
+    * `image` : _string_ or _table_: the image to show in the frame that will be builded as a 3D block icon. (if table:{top = _string_, left = _string_, right = _string_}) 
+    * `position` : the position on the screen.
+    * returns the container. 
+
+    Container has these default elements:
+    * `background` : the background image
+    * `square` : the border frame around the image
+    * `image` : the image of the 3d block shown
+
+4. ### _newBlockBoxT_
+    This method create a frame containing a representation of a block (top,left and right \\|/ ).
+    ```lua
+    function minebase.HUD.complex:newBlockBoxT(player, name, image, position, size)
+    ```
+    * `player` : same as `createContainer`
+    * `name` : same as `createContainer`
+    * `image` : _string_ or _table_: the image to show in the frame that will be builded as a 3D block icon. (if table:{top = _string_, left = _string_, right = _string_}) 
+    * `position` : the position on the screen.
+    * `size` : the size in px of the iconBox. Default is `minebase.screen.square.medium_l` . Sizes can be found in: `minebase.screen.square.[size]`
+    * returns the container. 
+
+    Container has these default elements:
+    * `icon` : the background image + the border frame around the image + the image of the 3d block shown
+
+    ![BlockBox](https://imgur.com/4ncsIhW)
+
+5. ### _newEffectBar_
+    This method create an effect bar.
+    ```lua
+    function minebase.HUD.complex:newEffectBar(player, name, effect_applied, position)
+    ```
+    * `player` : same as `createContainer`
+    * `name` : same as `createContainer`
+    * `effect_applied` : _effect_: the effect to show in this bar. 
+    * `position` : the position on the screen.
+    * returns the container. 
+
+    Container has these default elements:
+    * `bar` : the background image
+    * `square` : the border frame around the image
+    * `image` : the image of the effect
+    * `text` : the name of the effect
+    * `timer` : the countdown timer of the effect
+
+6. ### _newEffectBarT_
+    This method create an effect bar.
+    ```lua
+    function minebase.HUD.complex:newEffectBarT(player, name, effect_applied, position)
+    ```
+    * `player` : same as `createContainer`
+    * `name` : same as `createContainer`
+    * `effect_applied` : _effect_: the effect to show in this bar. 
+    * `position` : the position on the screen.
+    * returns the container. 
+
+    Container has these default elements:
+    * `base` : the background image + the border frame around the image + the image of the effect
+    * `text` : the name of the effect
+    * `timer` : the countdown timer of the effect
+
+7. ### _newEffectList_
+    Creates the automatic list to show current effects. Needs to be changed.
+
+8. ### _newBoxBorderT_
+    This method creates just a border.
+    ```lua
+    function minebase.HUD.complex:newBoxBorderT(player, name, position, width, height)
+    ```
+    * `player` : same as `createContainer`
+    * `name` : same as `createContainer`
+    * `position` : the position on the screen.
+    * `width` : the width of the box.
+    * `height` : the height of the box.
+    * returns the container. 
+
+    Container has these default elements:
+    * `border` : a border image
+
+9. ### _newBoxT_
+    This method creates an empty box with border.
+    ```lua
+    function minebase.HUD.complex:newBoxT(player, name, position, width, height)
+    ```
+    * `player` : same as `createContainer`
+    * `name` : same as `createContainer`
+    * `position` : the position on the screen.
+    * `width` : the width of the box.
+    * `height` : the height of the box.
+    * returns the container. 
+
+    Container has these default elements:
+    * `box` : transparent background + border image
+
+10. ### _newTextBoxT_
+    This method creates an box with a border frame, a title and text (text automatically warps).
+    ```lua
+    function minebase.HUD.complex:newTextBoxT(player, name, position, width, height, title, title_color, text, text_color)
+    ```
+    * `player` : same as `createContainer`
+    * `name` : same as `createContainer`
+    * `position` : the position on the screen.
+    * `width` : the width of the box.
+    * `height` : the height of the box.
+    * `title` : the text for the title of the box.
+    * `title_color` : font color for the title of the box.
+    * `text` : the text for the box.
+    * `text_color` : font color for the text of the box.
+    * returns the container. 
+
+    Container has these default elements:
+    * `box` : transparent background + border image
+    * `title` : title of the box
+    * `text` : text of the box
+
+### Complex containers
+These are container with new behaviors:
+
+## 1. List
+A list is a container that renders elements with spacing between them. It allows to choose a direction so items are added along the same, also, if set, when reached a specific number element the list can warp in another direction.
+
+Example list: append direction bottom, expand direction to left, expand to left after 5 elements appended. 
+
+![List image](https://imgur.com/undefined)
+
+- Yellow arrow : direction which this list appends the items
+- Green arrow : direction which this list exends when it reaches 5 elements
 
 
 ## Easy access 
