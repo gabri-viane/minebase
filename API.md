@@ -39,7 +39,6 @@ Values can be: mandatory ( k = v )  or optional ( k ?= v )
  - `<element_table>` : table `{name=<string>, element=<hud:*>}` 
  - `<text_instruction_table>` : table `{text=<string>, font_color?=<color>, bg_color?=<color>}` 
  - `<param_table>` : table `{name=<string>, type=<string>, optional=<boolean>}` 
- - `<prama_table>` : table `{name=<string>, type=<string>, optional=<boolean>}` 
  - `<drawable_table>` : table `{id?=<number>, name=<string>,type=<string>, drawable=<hud:*>, refresh?=table<<update_table>>}`
  - `<update_table>` : table `{*=*}`
 
