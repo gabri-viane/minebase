@@ -23,6 +23,26 @@ An effect, for example jump_boost:
 
 If you are looking for an effect function it will be in: `minebase.effects.functions`, same for HUD: `minebase.HUD.functions`, and so on... 
 
+### Types
+Values can be: mandatory ( k = v )  or optional ( k ?= v )
+
+ - `<string>` : string 
+ - `<number>` : integer / float 
+ - `<boolean>` : boolean
+ - `<table>` : table 
+ - `<function>` : function 
+ - `<PlayerRef>` : Minetest API reference 
+ - `<position>` : table `{x=<number>, y=<number>}` : `minebase.screen.*` or `minebase.screen.square.*`  
+ - `<color>` : #RGBA string : `minebase.colors.list.*.*` 
+ - `<hud:def>` : table of hud type def 
+ - `<hud:container>` : container 
+ - `<element_table>` : table `{name=<string>, element=<hud:*>}` 
+ - `<text_instruction_table>` : table `{text=<string>, font_color?=<color>, bg_color?=<color>}` 
+ - `<param_table>` : table `{name=<string>, type=<string>, optional=<boolean>}` 
+ - `<prama_table>` : table `{name=<string>, type=<string>, optional=<boolean>}` 
+ - `<drawable_table>` : table `{id?=<number>, name=<string>,type=<string>, drawable=<hud:*>, refresh?=table<<update_table>>}`
+ - `<update_table>` : table `{*=*}`
+
 ## `minebase.statics`
 Doesn't provide any useful data.
 
@@ -453,7 +473,7 @@ You may try yourself all the possibilities.
    * `position` : `<position>` : only the main container uses this attribute, all the sub-elements (type = "def" or "container"), inherit the position of their main container.
    * `type` : `<string>` : it can be `"def"`or `"container"` (no need to handle it)
    * `offset` : `<position>` : the offset of this container reletive to the main container position (all of sub-elements offsets depend on it).
-   * `elements` : `<table<drawable_tabe>>` : a list of drawables (a drawable is a table {id (optional), name , type, drawable, refresh (optional)})
+   * `elements` : `<table<drawable_tabe>>` : a list of _drawable_table_ 
    * `to_draw` : `<boolean>` : internal parameter
    * `to_refresh` : `<boolean>` : internal parameter
    * `refresh_callback` : `<function>` : a function called on every update request from the container (optional)
@@ -793,12 +813,12 @@ function minebase.HUD.complex:newList(player, name, position, spacing, rules)
 * `position` : `<position>` : the position on the screen.
 * `spacing` : `<number>` : the spacing between elements. (_default 10px_)
 * `rules` : `<table>` : additional rules can be set passing this table. Additional rules:
-    * `direction` : `{x=<number>,y=<number>}` : the direction which the list appends: (_default {x=-1, y=0}_)
+    * `direction` : `<position>` : the direction which the list appends: (_default {x=-1, y=0}_)
         * y=  [-1 : up]  [1 : down]
         * x=  [-1 : left] : [1 : right] 
     * `expandable` : `<boolean>` : if _true_ checks **expand_limit** and warps the list (_default false_)
     * `expand_limit` : `<number>` : max number of elements before the list warps (_default 5_)
-    * `expand_direction` : `{x=<number>,y=<number>}` : the direction which the list warps: (_default {x=-1, y=0}_)
+    * `expand_direction` : `<position>` : the direction which the list warps: (_default {x=-1, y=0}_)
         * y=  [-1 : up]  [1 : down]
         * x=  [-1 : left] : [1 : right] 
     * `v_spacing` : `<number>` : spacing when the list warps (_default 10_)
