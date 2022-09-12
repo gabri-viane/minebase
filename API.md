@@ -37,9 +37,9 @@ This package has all utilty functions used by the mod itself that can be used bu
     function minebase.functions:registerTx (to_subscribe) 
     ```
     * `to_subscribe = {dt = <number>, finish = <function>, tick = <function(self)>}`<br>
-        * `dt` is the number in seconds before the function `finish` is called, it's decremented by dtime every step
-        * `finish` is a function that is called when `dt` is <= 0
-        * `tick` is a method: is called every global step but not when `finish` is called. A self table is passed to this function every step.(`to_subscribe:tick()`)
+        * `dt` : `<number>` :  is the number in seconds before the function `finish` is called, it's decremented by dtime every step
+        * `finish` : `<function>` :  is a function that is called when `dt` is <= 0
+        * `tick` : `<function>` :  is a method: is called every global step but not when `finish` is called. A self table is passed to this function every step.(`to_subscribe:tick()`)
 
     After the `finish` function is called `to_subscribe` is removed from globalstep register.
 2. ### _stringToTokens_
@@ -48,7 +48,7 @@ This package has all utilty functions used by the mod itself that can be used bu
     ```lua
     minebase.functions.stringToTokens = function(string)
     ```
-    * `string` the string to be splitted in tokens
+    * `string` : `<string>` : the string to be splitted in tokens
 
     e.g. 
     ```lua
@@ -63,7 +63,7 @@ This package has all utilty functions used by the mod itself that can be used bu
     ```lua
     minebase.functions.numberToTimer = function(seconds)
     ```
-    * `seconds` the number of seconds to be converted.
+    * `seconds` : `<number>` : the number of seconds to be converted.
     
     e.g. 
     ```lua
@@ -77,7 +77,7 @@ This package has all utilty functions used by the mod itself that can be used bu
     ```lua
     minebase.functions.sizeToString = function (size)
     ```
-    * `size={x = <number>, y = <number>}` it's a size table
+    * `size` : `<position>` : it's a size table
     
     e.g. 
     ```lua
@@ -91,8 +91,8 @@ This package has all utilty functions used by the mod itself that can be used bu
     ```lua
    minebase.functions.warpString = function(string_to_warp, max_length)
     ```
-    * `string_to_warp` the string to warp;
-    * `max_length` the max number of characters on a line;
+    * `string_to_warp` : `<string>` : the string to warp;
+    * `max_length` : `<number>` : the max number of characters on a line;
     
     e.g. 
     ```lua
@@ -113,8 +113,8 @@ This package has all utilty functions used by the mod itself that can be used bu
     ```lua
     minebase.functions.splitString = function(inputstr, sep)
     ```
-    * `inputstr` the string to be splitted in tokens;
-    * `sep` the separator to use;
+    * `inputstr` : `<string>` : the string to be splitted in tokens;
+    * `sep` : `<string>` : the separator to use;
 
     e.g. 
     ```lua
@@ -165,22 +165,22 @@ It provides many useful and default variables to pass to this mod's methods and 
     ```lua
     function minebase.screen:enableScreen(player)
     ```
-    * `player` the PlayerRef to regiseter;
+    * `player` : `<PlayerRef>` : the PlayerRef to regiseter;
 4. ### _disableScreen_
     Remove a player from using this mod screen services.<br>
     It's defined as a method:
     ```lua
     function minebase.screen:disableScreen(player)
     ```
-    * `player` the PlayerRef to remove;
+    * `player` : `<PlayerRef>` : the PlayerRef to remove;
 5. ### _get_
     Get a container (HUD element that will be explained later), previously registered to a player screen, by it's name.<br>
     It's defined as a method:
     ```lua
     function minebase.screen:get(player, container_name)
     ```
-    * `player` the PlayerRef to get the screen;
-    * `container_name` the name of the previously registered container.
+    * `player` : `<PlayerRef>` : the PlayerRef to get the screen;
+    * `container_name` : `<string>` : the name of the previously registered container.
 
      e.g. 
     ```lua
@@ -197,7 +197,7 @@ It provides many useful and default variables to pass to this mod's methods and 
     ```lua
     function minebase.screen:addToScreen(container)
     ```
-    * `container` the container to register to the owner screen.
+    * `container` : `<hud:container>` : the container to register to the owner screen.
 
      e.g. 
     ```lua
@@ -218,7 +218,7 @@ It provides many useful and default variables to pass to this mod's methods and 
     ```lua
     function minebase.screen:removeFromScreen(container)
     ```
-    * `container` the container to remove from the owner screen.
+    * `container` : `<hud:container>` : the container to remove from the owner screen.
 
      e.g. 
     ```lua
@@ -266,8 +266,8 @@ Provides some methods to make easier to use colors in this mod.
     ```lua
     minebase.colors.functions.getColorString = function(color_name, type)
     ```
-    * `color_name` the name of the color from the list(if not found default is black).
-    * `type` the variant of the color from the list (light,dark, or custom)(if not found default is light).
+    * `color_name` : `<string>` : the name of the color from the list(if not found default is black).
+    * `type` : `<string>` : the variant of the color from the list (light,dark, or custom)(if not found default is light).
 
     if the color.type is a function then the value returned from the function is returned. (As for `random.rnd1`).
 
@@ -277,24 +277,24 @@ Provides some methods to make easier to use colors in this mod.
     ```lua
     minebase.colors.functions.getColorHex = function(color_name, type)
     ```
-    * `color_name` the name of the color from the list(if not found default is black).
-    * `type` the variant of the color from the list (light,dark, or custom)(if not found default is light).
+    * `color_name` : `<string>` : the name of the color from the list(if not found default is black).
+    * `type` : `<string>` : the variant of the color from the list (light,dark, or custom)(if not found default is light).
 4. ### _addColor_
     Allows to add a color to the list.<br>
     It's defined as a function:
     ```lua
     minebase.colors.functions.addColor = function(color_name, type, value)
     ```
-    * `color_name` the name of the color.
-    * `type` the variant of the color.
-    * `value` the value of the color variant: can be a string or a function (or anything else, but not supported).
+    * `color_name` : `<string>` : the name of the color.
+    * `type` : `<string>`  :the variant of the color.
+    * `value` : `<string>` : the value of the color variant: can be a string or a function (or anything else, but not supported).
 5. ### _setTextColor_
     Formats a table to a coloured text with escape sequences. It can colorize a text with different font and/or background color (if defined, otherwise no color is set).<br>
     It's defined as a function:
     ```lua
     minebase.colors.functions.setTextColor = function(text_instructions)
     ```
-    * `text_instructions = {<text_instruction>,<text_instruction>,...}` a table of _text_instruction_.
+    * `text_instructions` : `<table<text_instruction_table>>` :  a table of _text_instruction_.
 
     A _text instruction_ is a table with three key-value pairs:
       1. _text_ : the text to format with provided colors. It's mandatory
@@ -325,9 +325,9 @@ It's defined as a function:
 ```lua
 minebase.commands.functions.addCommand = function(mod_name, command_alias, param_list, privileges, callback_function,description)
 ```
-* `mod_name` a string of the mod which is registering the command.
-* `command_alias` the alias for the chat command (string). e.g. for /jump, *jump* would be the alias.
-* `param_list={<param_table>,<param_table>` an id-ordered table of prameters needed by the command:
+* `mod_name` : `<string>` : a string of the mod which is registering the command.
+* `command_alias` : `<string>` : the alias for the chat command (string). e.g. for /jump, *jump* would be the alias.
+* `param_list` : `<table<param_table>>` : an id-ordered table of prameters needed by the command:
   e.g.
 
   for the command: /jump \<who> \<height> <br>
@@ -345,9 +345,9 @@ minebase.commands.functions.addCommand = function(mod_name, command_alias, param
         }
     }
     ```
-* `privileges` a list of privileges required.
-* `description` the description of the command.
-* `callback_function` the function called when a player uses the command, this is how it needs to be defined:
+* `privileges` : `<table>` :  a list of privileges required.
+* `description` : `<string>` : the description of the command.
+* `callback_function` : `<function>` :  the function called when a player uses the command, this is how it needs to be defined:
     ```lua
     function(name,params)
         --name is the name of the player
@@ -407,11 +407,11 @@ But before explaining what a container is here is a list of functions that allow
     minebase.HUD.functions.newText = function(text, scale, offset, color, direction, alignment, size, style, z_index)
     ```
     All the parameters are already defined in Minetest API (just _color_ is _number_ in Minetest API). Also: default values are:
-    * direction = 0
-    * size = { x = 1, y = 0}
-    * style = 0
-    * number = (black) #000000
-    * z_index = 0
+    * `direction = 0`
+    * `size = { x = 1, y = 0}`
+    * `style = 0`
+    * `number = (black) #000000`
+    * `z_index = 0`
 
 2. ### newImage
     It's a function that returns a table of a **hud_elem_type="image"**
@@ -419,9 +419,9 @@ But before explaining what a container is here is a list of functions that allow
     minebase.HUD.functions.newImage = function(image, scale, offset, direction, alignment, z_index)
     ```
     All the parameters are already defined in Minetest API (just _color_ is _number_ in Minetest API). Also: default values are:
-    * direction = 0
-    * alignment = { x = 0, y = 0}
-    * z_index = 0
+    * `direction = 0`
+    * `alignment = { x = 0, y = 0}`
+    * `z_index = 0`
 
 ## Container
 There are some functions related to the handling of the container but I will not cover them as they are designed to not be modified and not meant to be "modder-friendly", but if you are intrested in modifing the behaviors or even optimize them, you can find them in
@@ -448,15 +448,15 @@ The elements are drawn realtive to a container, e.g.:<br>
 You may try yourself all the possibilities.
 
 ## 1. Attributes
-   * `name` : _string_ : name of the container, it's used to get an element back from its list of sub-elements
-   * `owner` : _PlayerRef_ : the player that owns this container, this will determine the behavior of `minebase.screen:addToScreen(container)`
-   * `position` : _position_ ( table{x,y} ) : only the main container uses this attribute, all the sub-elements (type = "def" or "container"), inherit the position of their main container.
-   * `type` : _string_ : it can be `"def"`or `"container"` (no need to handle it)
-   * `offset` : _position_ ( table{x,y} ) : the offset of this container reletive to the main container position (all of sub-elements offsets depend on it).
-   * `elements` : _table of drawables_ : a list of drawables (a drawable is a table {id (optional), name , type, drawable, refresh (optional)})
-   * `to_draw` : _boolean_ : internal parameter
-   * `to_refresh` : _boolean_ : internal parameter
-   * `refresh_callback` : _function_ (optional) : a function called on every update request from the container
+   * `name` : `<string>` : name of the container, it's used to get an element back from its list of sub-elements
+   * `owner` : `<PlayerRef>` : the player that owns this container, this will determine the behavior of `minebase.screen:addToScreen(container)`
+   * `position` : `<position>` : only the main container uses this attribute, all the sub-elements (type = "def" or "container"), inherit the position of their main container.
+   * `type` : `<string>` : it can be `"def"`or `"container"` (no need to handle it)
+   * `offset` : `<position>` : the offset of this container reletive to the main container position (all of sub-elements offsets depend on it).
+   * `elements` : `<table<drawable_tabe>>` : a list of drawables (a drawable is a table {id (optional), name , type, drawable, refresh (optional)})
+   * `to_draw` : `<boolean>` : internal parameter
+   * `to_refresh` : `<boolean>` : internal parameter
+   * `refresh_callback` : `<function>` : a function called on every update request from the container (optional)
 
 ## 2. Methods
 **(ATTENTION: USE container:function and not container.function)**
@@ -464,14 +464,14 @@ You may try yourself all the possibilities.
     ```lua
     function container:getElement(nm)
     ```
-    * `nm` : the name of the element previously added to this container
+    * `nm` : `<string>` : the name of the element previously added to this container
     * returns the drawable of a _drawable_table_: can be a _def_ or a _container_
 
 2. ### **get**
     ```lua
     function container:get(nm)
     ```
-    * `nm` : the name of the element previously added to this container
+    * `nm` : `<string>` : the name of the element previously added to this container
     * returns the _drawable_table_: 
         ```lua
         {
@@ -486,27 +486,27 @@ You may try yourself all the possibilities.
     ```lua
     function container:getID(nm)
     ```
-    * `nm` : the name of the element previously added to this container
+    * `nm` : `<string>` : the name of the element previously added to this container
     * returns the id of the _drawable_table_ in `elements` matching the same name
   
 4. ### **getLast**
     ```lua
     function container:getLast()
     ```
-    * returns the last  _drawable_table_ in `elements`
+    * returns the last  _drawable_table_ in `elements` 
 
 5. ### **move**
     ```lua
     function container:move(to_position)
     ```
-    * `to_position` : position to move the container to (only for main container, not container as sub-elements of other container) 
+    * `to_position` : `<position>` : position to move the container to (only for main container, not container as sub-elements of other container) 
 
 6. ### **addOffset**
     ```lua
     function container:addOffset(x, y)
     ```
-    * `x` : amount of pixels to offset on x axis
-    * `y` : amount of pixels to offset on y axis
+    * `x` : `<number>` : amount of pixels to offset on x axis
+    * `y` : `<number>` : amount of pixels to offset on y axis
 
     As the name says: it adds to current offset, it doesn't replace the values.
 
@@ -514,8 +514,8 @@ You may try yourself all the possibilities.
     ```lua
     function container:updateElement(nm, updates)
     ```
-    * `nm` : the name of the component to update
-    * `updates` : a table of updates. Updates only applies on _def_ elements. For container this parameter is usless. This parameter needs to be a list of _update_table_ :
+    * `nm` : `<string>` : the name of the component to update
+    * `updates` : `<table<update_table>>` : a table of updates. Updates only applies on _def_ elements. For container this parameter is usless. This parameter needs to be a list of _update_table_ :
         ```lua
         {
             {--This is an update_table
@@ -535,20 +535,20 @@ You may try yourself all the possibilities.
     ```lua
     function container:onRefreshRequest(RFunction)
     ```
-    * `RFunction` : the function that will be called when a component update is requested (so a container refresh request)
+    * `RFunction` : `<function>` : the function that will be called when a component update is requested (so a container refresh request)
 
 9. ### **addElement**
     ```lua
     function container:addElement(nm, element)
     ```
-    * `nm` : the name of the component to add, then the component can be searched by its name with `component:getElement(nm)`
-    * `element` : the element to add: a container or an element created from `minebase.HUD.function.newText` or `minebase.HUD.function.newImage`
+    * `nm` : `<string>` : the name of the component to add, then the component can be searched by its name with `component:getElement(nm)`
+    * `element` : `<hud:def>` or `<hud:container>` : the element to add: a container or an element created from `minebase.HUD.function.newText` or `minebase.HUD.function.newImage`
 
 10. ### **addElements**
     ```lua
     function container:addElements(els)
     ```
-    * `els` : a list of element_table:
+    * `els` : `<table<element_table>>` :a list of element_table:
         ```lua
         {
             {
@@ -575,7 +575,7 @@ You may try yourself all the possibilities.
     ```lua
     function container:removeElement(nm)
     ```
-    * `nm` : the name of the component to remove
+    * `nm` : `<string>` : the name of the component to remove
 
 13. ### **registerToScreen**
     ```lua
@@ -591,21 +591,21 @@ There are two functions to allow creation of (basic) containers:
    ```lua
     minebase.HUD.functions.createContainer = function(player, name, position, offset)
     ```
-    * `player` : _PlayerRef_ : the owner of this container; this container, if registered to screen, will be owned by this player.
-    * `name` : _string_ : the name of the container. If registered to screen this is the name to get the container back.
-    * `position` : _position_ ( table{x,y} ) : absolute position of the container. All sub-elements are relative to this position. (For best practice use positions from `minebase.screen.[position_name]`)
-    * `offset` : _position_ ( table{x,y} ) : relative position of the container to its absolute position. (Optional)
+    * `player` : `<PlayerRef>` : the owner of this container; this container, if registered to screen, will be owned by this player.
+    * `name` : `<string>` : the name of the container. If registered to screen this is the name to get the container back.
+    * `position` : `<position>` : absolute position of the container. All sub-elements are relative to this position. (For best practice use positions from `minebase.screen.[position_name]`)
+    * `offset`  : `<position>` : relative position of the container to its absolute position. (Optional)
     * returns a **container**
 
 2. ### **createLightContainer**
     ```lua
     minebase.HUD.functions.createLightContainer = function(player, name, position, offset, component)
     ```
-    * `player` : same as `createContainer`
-    * `name` : same as `createContainer`
-    * `position` : same as `createContainer`
-    * `offset` : same as `createContainer`
-    * `component` : component to set for this container
+    * `player` : `<PlayerRef>` : same as `createContainer`
+    * `name` : `<string>` :  same as `createContainer`
+    * `position` : `<position>` :  same as `createContainer`
+    * `offset` : `<number>` :  same as `createContainer`
+    * `component` : `<hud:def>` or `<hud:container>` : component to set for this container
     * returns a **container**
 
     This container can only contain 1 element (the paramete `component`). Add,Remove methods do not work. 
@@ -625,14 +625,14 @@ These are allo methods, call them with ":".
     ```
     * `player` : same as `createContainer`
     * `name` : same as `createContainer`
-    * `image` : the image to show in the frame; optimal texture size: 32x32 with 3px around of transparent border.
-    * `position` : the position on the screen.
+    * `image` : `<string>` : the image to show in the frame; optimal texture size: 32x32 with 3px around of transparent border.
+    * `position` : `<position>` : the position on the screen.
     * returns the container. 
 
     Container has these default elements:
-    * `background` : the background image
-    * `square` : the border frame around the image
-    * `image` : the image shown
+    * `background` : `<hud:def>` : the background image
+    * `square` : `<hud:def>` : the border frame around the image
+    * `image` : `<hud:def>` : the image shown
 
 2. ### _newIconBoxT_
     This method create a frame containing an image.
@@ -641,13 +641,13 @@ These are allo methods, call them with ":".
     ```
     * `player` : same as `createContainer`
     * `name` : same as `createContainer`
-    * `image` : the image to show in the frame.
-    * `position` : the position on the screen.
-    * `size` : the size in px of the iconBox. Default is `minebase.screen.square.medium_l` . Sizes can be found in: `minebase.screen.square.[size]`
+    * `image` : `<string>` : the image to show in the frame.
+    * `position` : `<position>` : the position on the screen.
+    * `size` : `<number>` : the size in px of the iconBox. Default is `minebase.screen.square.medium_l` . Sizes can be found in: `minebase.screen.square.[size]`
     * returns the container.
 
     Container has these default elements:
-    * `icon` : the background image + the border frame around the image + the image shown
+    * `icon` : `<hud:def>` : the background image + the border frame around the image + the image shown
 
     ![IconBox](https://i.imgur.com/ecKRL7M.png)
 
@@ -658,14 +658,14 @@ These are allo methods, call them with ":".
     ```
     * `player` : same as `createContainer`
     * `name` : same as `createContainer`
-    * `image` : _string_ or _table_: the image to show in the frame that will be builded as a 3D block icon. (if table:{top = _string_, left = _string_, right = _string_}) 
-    * `position` : the position on the screen.
+    * `image` : `<string>`  or `<table>` : the image to show in the frame that will be builded as a 3D block icon. (if table:{top = _string_, left = _string_, right = _string_}) 
+    * `position` : `<position>` : the position on the screen.
     * returns the container. 
 
     Container has these default elements:
-    * `background` : the background image
-    * `square` : the border frame around the image
-    * `image` : the image of the 3d block shown
+    * `background` : `<hud:def>` : the background image
+    * `square` : `<hud:def>` : the border frame around the image
+    * `image` : `<hud:def>` : the image of the 3d block shown
 
 4. ### _newBlockBoxT_
     This method create a frame containing a representation of a block (top,left and right \\|/ ).
@@ -674,13 +674,13 @@ These are allo methods, call them with ":".
     ```
     * `player` : same as `createContainer`
     * `name` : same as `createContainer`
-    * `image` : _string_ or _table_: the image to show in the frame that will be builded as a 3D block icon. (if table:{top = _string_, left = _string_, right = _string_}) 
-    * `position` : the position on the screen.
-    * `size` : the size in px of the iconBox. Default is `minebase.screen.square.medium_l` . Sizes can be found in: `minebase.screen.square.[size]`
+    * `image` : `<string>`  or `<table>` : the image to show in the frame that will be builded as a 3D block icon. (if table:{top = _string_, left = _string_, right = _string_}) 
+    * `position` : `<position>` : the position on the screen.
+    * `size` : `<number>` : the size in px of the iconBox. Default is `minebase.screen.square.medium_l` . Sizes can be found in: `minebase.screen.square.[size]`
     * returns the container. 
 
     Container has these default elements:
-    * `icon` : the background image + the border frame around the image + the image of the 3d block shown
+    * `icon` : `<hud:def>` : the background image + the border frame around the image + the image of the 3d block shown
 
     ![BlockBox](https://i.imgur.com/4ncsIhW.png)
 
@@ -691,16 +691,16 @@ These are allo methods, call them with ":".
     ```
     * `player` : same as `createContainer`
     * `name` : same as `createContainer`
-    * `effect_applied` : _effect_: the effect to show in this bar. 
-    * `position` : the position on the screen.
+    * `effect_applied` : `<effect>` : the effect to show in this bar. 
+    * `position` : `<position>` : the position on the screen.
     * returns the container. 
 
     Container has these default elements:
-    * `bar` : the background image
-    * `square` : the border frame around the image
-    * `image` : the image of the effect
-    * `text` : the name of the effect
-    * `timer` : the countdown timer of the effect
+    * `bar` : `<hud:def>` :the background image
+    * `square` : `<hud:def>` :the border frame around the image
+    * `image` : `<hud:def>` :the image of the effect
+    * `text` : `<hud:def>` :the name of the effect
+    * `timer` : `<hud:def>` :the countdown timer of the effect
 
 6. ### _newEffectBarT_
     This method create an effect bar.
@@ -709,14 +709,14 @@ These are allo methods, call them with ":".
     ```
     * `player` : same as `createContainer`
     * `name` : same as `createContainer`
-    * `effect_applied` : _effect_: the effect to show in this bar. 
-    * `position` : the position on the screen.
+    * `effect_applied` : `<effect>` : the effect to show in this bar. 
+    * `position` : `<position>` : the position on the screen.
     * returns the container. 
 
     Container has these default elements:
-    * `base` : the background image + the border frame around the image + the image of the effect
-    * `text` : the name of the effect
-    * `timer` : the countdown timer of the effect
+    * `base` : `<hud:def>` :the background image + the border frame around the image + the image of the effect
+    * `text` : `<hud:def>` : the name of the effect
+    * `timer` : `<hud:def>` : the countdown timer of the effect
 
 7. ### _newEffectList_
     Creates the automatic list to show current effects. Needs to be changed.
@@ -728,13 +728,13 @@ These are allo methods, call them with ":".
     ```
     * `player` : same as `createContainer`
     * `name` : same as `createContainer`
-    * `position` : the position on the screen.
-    * `width` : the width of the box.
-    * `height` : the height of the box.
+    * `position` : `<position>` : the position on the screen.
+    * `width` : `<number>` :the width of the box.
+    * `height` : `<number>` :the height of the box.
     * returns the container. 
 
     Container has these default elements:
-    * `border` : a border image
+    * `border` : `<hud:def>` : a border image
 
 9. ### _newBoxT_
     This method creates an empty box with border.
@@ -743,13 +743,13 @@ These are allo methods, call them with ":".
     ```
     * `player` : same as `createContainer`
     * `name` : same as `createContainer`
-    * `position` : the position on the screen.
-    * `width` : the width of the box.
-    * `height` : the height of the box.
+    * `position` : `<position>` : the position on the screen.
+    * `width` : `<number>` : the width of the box.
+    * `height` : `<number>` : the height of the box.
     * returns the container. 
 
     Container has these default elements:
-    * `box` : transparent background + border image
+    * `box` : `<hud:def>` : transparent background + border image
 
 10. ### _newTextBoxT_
     This method creates an box with a border frame, a title and text (text automatically warps).
@@ -758,19 +758,19 @@ These are allo methods, call them with ":".
     ```
     * `player` : same as `createContainer`
     * `name` : same as `createContainer`
-    * `position` : the position on the screen.
-    * `width` : the width of the box.
-    * `height` : the height of the box.
-    * `title` : the text for the title of the box.
-    * `title_color` : font color for the title of the box.
-    * `text` : the text for the box.
-    * `text_color` : font color for the text of the box.
+    * `position` : `<position>` : the position on the screen.
+    * `width` : `<number>` :  the width of the box.
+    * `height` : `<number>` : the height of the box.
+    * `title` : `<string>` :  the text for the title of the box.
+    * `title_color` : `<color>` :  font color for the title of the box.
+    * `text` : `<string>` : the text for the box.
+    * `text_color` : `<color>` : font color for the text of the box.
     * returns the container. 
 
     Container has these default elements:
-    * `box` : transparent background + border image
-    * `title` : title of the box
-    * `text` : text of the box
+    * `box` : `<hud:def>` :  transparent background + border image
+    * `title` : `<hud:def>` : title of the box
+    * `text` : `<hud:def>` : text of the box
 
 ### Complex containers
 These are container with new behaviors:
@@ -807,7 +807,7 @@ function minebase.HUD.complex:newList(player, name, position, spacing, rules)
 The example list in the image has these for rules:
 ```lua
 rules = {
-    direction = { x = 0, y = 1 };
+    direction = { x = 0, y = 1 },
     expandable = true,
     expand_limit = 5,
     expand_direction = { x = -1, y = 0 },

@@ -346,8 +346,8 @@ function minebase.HUD.complex:newList(player, name, position, spacing, rules)
             self:addElement(el.name, to_add);
         end
 
-        function container:listRemove(name)
-            local removed = container:removeElement(name);
+        function container:listRemove(nm)
+            local removed = container:removeElement(nm);
             if removed then
                 if removed.element then
                     removed.element.drawable:delete(); --So per certo che è un container
