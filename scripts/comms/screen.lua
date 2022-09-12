@@ -3,28 +3,25 @@ minebase.screen.genPoint = function(x, y)
 end
 
 minebase.screen = {
-    p = { --Points
-        top = {
-            left = minebase.screen.genPoint(0, 0),
-            middle = minebase.screen.genPoint(0.5, 0),
-            right = minebase.screen.genPoint(1, 0)
-        },
-        middle = {
-            left = minebase.screen.genPoint(0, 0.5),
-            middle = minebase.screen.genPoint(0.5, 0.5),
-            right = minebase.screen.genPoint(1, 0.5)
-        },
-        bottom = {
-            left = minebase.screen.genPoint(0, 1),
-            middle = minebase.screen.genPoint(0.5, 1),
-            right = minebase.screen.genPoint(1, 1)
-        }
-    },
-    d = { --Dimension
-        title = { x = 800, y = 800 },
-        short_string = { x = 200, y = 50 },
-        med_string = { x = 500, y = 50 },
-        long_string = { x = 800, y = 50 }
+    top_left = { x = 0, y = 0 },
+    top_center = { x = 0.5, y = 0 },
+    top_right = { x = 1, y = 0 },
+    center_left = { x = 0, y = 0.5 },
+    center_center = { x = 0.5, y = 0.5 },
+    center_right = { x = 1, y = 0 },
+    bottom_left = { x = 0, y = 1 },
+    bottom_center = { x = 0.5, y = 1 },
+    bottom_right = { x = 1, y = 1 },
+    square = {
+        small_s = { x = 4, y = 4 },
+        small = { x = 8, y = 8 },
+        small_l = { x = 16, y = 16 },
+        medium_s = { x = 24, y = 24 },
+        medium = { x = 32, y = 32 },
+        medium_l = { x = 44, y = 44 },
+        large_s = { x = 56, y = 56 },
+        large = { x = 64, y = 64 },
+        large_l = { x = 72, y = 72 },
     },
     containers = {
         --Lista giocatori
@@ -52,12 +49,14 @@ function minebase.screen:get(player, container_name)
 end
 
 function minebase.screen:addToScreen(container)
-    local player = container.owner;
-    local player_screen = self.containers[player];
-    local indx = #player_screen.all + 1;
-    player_screen.all[indx] = container;
-    player_screen.named[container.name] = container;
-    container.screen_pos = { minebase.screen:assignToScreen(container), indx };
+    if container then
+        local player = container.owner;
+        local player_screen = self.containers[player];
+        local indx = #player_screen.all + 1;
+        player_screen.all[indx] = container;
+        player_screen.named[container.name] = container;
+        container.screen_pos = { minebase.screen:assignToScreen(container), indx };
+    end
 end
 
 function minebase.screen:removeFromScreen(container)

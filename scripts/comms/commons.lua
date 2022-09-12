@@ -24,6 +24,10 @@ minebase.functions.numberToTimer = function(seconds)
     return minutes .. ":" .. seconds;
 end
 
+minebase.functions.sizeToString = function (size)
+    return size.x.."x"..size.y;
+end
+
 minebase.functions.warpString = function(string_to_warp, max_length)
     return minebase.functions.warpString_CN(minebase.functions.splitString(string_to_warp), max_length);
 end

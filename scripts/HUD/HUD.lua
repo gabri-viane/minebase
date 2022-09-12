@@ -17,9 +17,10 @@ end
 
 --Mostra un'icona in un frame quadrato con un background semi-trasparente grigio
 --La T alla fine vuol dire che raggruppa tutto in un unico elemento immagine
-function minebase.HUD.complex:newIconBoxT(player, name, image, position)
-    local icon_hud = minebase.HUD.functions.newImage("minebase_icon_square_background.png^minebase_icon_square.png^" ..
-        image, { x = 1.4, y = 1.4 },
+function minebase.HUD.complex:newIconBoxT(player, name, image, position, size)
+    local icon_hud = minebase.HUD.functions.newImage("(minebase_icon_square_background.png^minebase_icon_square.png^" ..
+        image .. ")^[resize:" .. minebase.functions.sizeToString(size or minebase.screen.square.medium_l),
+        { x = 1, y = 1 },
         { x = 0, y = 0 }, nil, { x = 0, y = 0 }, 4); --Riquadro+immagine
     local container = minebase.HUD.functions.createContainer(player, name, position);
     container:addElements({ { name = "icon", element = icon_hud } });
@@ -41,9 +42,16 @@ function minebase.HUD.complex:newBlockBox(player, name, image, position)
     return container;
 end
 
-function minebase.HUD.complex:newBlockBoxT(player, name, image, position)
-    local icon_hud = minebase.HUD.functions.newImage("minebase_icon_square_background.png^minebase_icon_square.png^(([inventorycube{"
-        .. image .. "{" .. image .. "{" .. image .. ")^[resize:32x32)", { x = 1.4, y = 1.4 },
+function minebase.HUD.complex:newBlockBoxT(player, name, image, position, size)
+    local icon_hud = minebase.HUD.functions.newImage("(minebase_icon_square_background.png^minebase_icon_square.png^(([inventorycube{"
+        ..
+        image ..
+        "{" ..
+        image ..
+        "{" ..
+        image .. ")^[resize:32x32))^[resize:" .. minebase.functions.sizeToString(size or minebase.screen.square.medium_l)
+        ,
+        { x = 1, y = 1 },
         { x = 0, y = 0 }, nil, { x = 0, y = 0 }, 4); --Background+Riquadro+immagine a forma di blocco
     local container = minebase.HUD.functions.createContainer(player, name, position);
     container:addElements({ { name = "icon", element = icon_hud } });
@@ -97,7 +105,7 @@ end
 --direction a -1 gli elementi vengono aggiunti verso il basso, con 1 verso l'altro
 function minebase.HUD.complex:newEffectList(player, direction, position)
     local container = minebase.HUD.functions.createContainer(player, "EFFECT_HUD",
-        position or minebase.screen.p.bottom.right, { x = 0, y = -32 });
+        position or minebase.screen.bottom_right, { x = 0, y = -32 });
     container.as = "effect_list";
     container.direction = direction or 1;
     --registro il container sullo schermo
@@ -317,7 +325,7 @@ function minebase.HUD.complex:newList(player, name, position, spacing, rules)
             local removed = container:removeElement(name);
             if removed then
                 if removed.element then
-                    removed.element.drawable:delete();
+                    removed.element.drawable:delete(); --So per certo che è un container
                 end
                 container:fixElements(removed.id);
             end
@@ -325,20 +333,57 @@ function minebase.HUD.complex:newList(player, name, position, spacing, rules)
 
         function container:fixElements(i_rem)
             local dx = self.datax;
+            local dir = dx.direction;
+            local ex_dir = dx.expand_direction;
+            local m = 0;
+
+            --numero colonna da cui l'ho rimosso
+            -- i_rem=id : corrisponde alla posizione nella lista e quindi al suo posizionamento
+            --i_rem % dx.expand_limit : corrisponde alla posizione nella riga, dove 0==primo elemento e dx.expand_limit-1 == ultimo elemento
+            local row_pos = (i_rem % dx.expand_limit); --+ 1 perchè se è 0 allora è il primo elemento di una colonna
+            -- i_rem-(row_) : corrisponde a il numero di elementi che completano "completamente" (che riempiono dx.expand_limit) le colonne prima di sé
+            -- /dx.expand_limit : per sapere quante colonne prima ci sono
+            --local col_ = (i_rem - row_pos) / dx.expand_limit;
+
+            --Rimuovo 1 dall'indice
             dx.last_index = dx.last_index - 1;
-            local left_to_move = dx.last_index - i_rem; --Da muovere
-            local to_stay = i_rem - 1; --Rimasti fermi
-            minetest.log("Removed: " .. i_rem .. " left items:" .. dx.last_index .. " | " .. left_to_move);
-            dx.row_index = dx.row_index -11;  -- rimpiazza -11 e fai i calcoli seri
-            --[[
-            local dir = self.datax.direction;
+            --Per calcolare di quanto va mosso l'elemento nella stessa colonna ma riga diversa
+            --devo solamente sottrarre la direzione di aggiunta normale della lista,
+            --per sapere se lo devo spostare anche di colonna devo vedere se si trova in una colonna successiva
+            --devo quindi contare quanti elementi sto spostando:
+            --parto dal vedere a che riga sono ora,
+            --dopo che so a che riga sono calcolo se sono in un nuovo indice di colonna facendo row_%dx.expand_limit,
+            --se == 0 allora devo anche spostarmi indietro di una colonna
+            --Lo spostamento massimo sulla riga è di dx.expand_limit
+            --e lo spostamento massimo sulle colonne è 1 per elemento: e corrisponde a 1 colonna indietro e una somma massima di riga
+
+            local moved = 0;
+            local m = 0;
+            local mx = 0;
             for i = i_rem, #self.elements do
+                moved = moved + 1;
                 local elem = self.elements[i].drawable;
                 if elem then
-                    elem:addOffset(-dir.x * self.datax.spacing, -dir.y * self.datax.spacing); --sposta in l'hud
+                    --La i corrisponde all'indice corrente, se i = i_rem allora sono il primo elemento
+                    --dopo quello rimosso: devo vedere se quello rimosso era il primo della riga
+                    row_pos = i % dx.expand_limit; --Per il primo il calcolo non cambia il valore
+                    if row_pos == 0 then --Se era il primo elemento nella riga allora devo sottrarre una colonna all'elemento
+                        m = 1; --l'elemento è da spostare nella colonna precedente
+                        mx = mx + 1;
+                    else
+                        m = 0; --l'elemento è da lasciare nella stessa colonna
+                    end
+                    --Se m=1 vuol dire che cambio colonna: +massima riga -1 colonna
+                    --Se m=0 vuol dire che cambio riga: -1 riga
+                    local r = (1 - m + (-(dx.expand_limit - 1) * m));
+                    --              RIGA                         COLONNA
+                    local x = -dir.x * dx.spacing * r + -ex_dir.x * dx.v_spacing * m; -- -riga + -colonna
+                    local y = -dir.y * dx.spacing * r + -ex_dir.y * dx.v_spacing * m;
+                    elem:addOffset(x, y); --sposta in l'hud
                 end
             end
-            ]]
+            --Ricalcolo il numero della colonna
+            dx.row_index = (dx.last_index - (dx.last_index % dx.expand_limit)) / dx.expand_limit;
         end
     else
         --Deve essere passato el:{name=...,element=...}

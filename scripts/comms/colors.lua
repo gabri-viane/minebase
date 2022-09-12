@@ -25,6 +25,7 @@ minebase.colors.list = {
         dark = '#206ba3ff'
     },
     blue = {
+        text = 0x0000cc,
         light = '#0000ccff',
         dark = '#00008eff'
     },
@@ -65,7 +66,7 @@ minebase.colors.list = {
 
 --Ritorna il colore richiesto come stringa se esistente altrimenti la variante light del colore black
 minebase.colors.functions.getColorString = function(color_name, type)
-    local value = minebase.colors.list[color_name or 'black'][type or 'light'] or minebase.colors.list.black.light;
+    local value = (minebase.colors.list[color_name or 'black'] or minebase.colors.list.black.light)[type or 'light'] or minebase.colors.list.black.light;
     if type(value) == "function" then
         value = value();
     end
