@@ -649,7 +649,7 @@ These are allo methods, call them with ":".
     Container has these default elements:
     * `icon` : the background image + the border frame around the image + the image shown
 
-    ![IconBox](https://imgur.com/ecKRL7M)
+    ![IconBox](https://i.imgur.com/ecKRL7M.png)
 
 3. ### _newBlockBox_
     This method create a frame containing a representation of a block (top,left and right \\|/ ).
@@ -682,7 +682,7 @@ These are allo methods, call them with ":".
     Container has these default elements:
     * `icon` : the background image + the border frame around the image + the image of the 3d block shown
 
-    ![BlockBox](https://imgur.com/4ncsIhW)
+    ![BlockBox](https://i.imgur.com/4ncsIhW.png)
 
 5. ### _newEffectBar_
     This method create an effect bar.
@@ -780,11 +780,65 @@ A list is a container that renders elements with spacing between them. It allows
 
 Example list: append direction bottom, expand direction to left, expand to left after 5 elements appended. 
 
-![List image](https://imgur.com/undefined)
+![List image](https://i.imgur.com/aHJvVxW.png)
 
 - Yellow arrow : direction which this list appends the items
 - Green arrow : direction which this list exends when it reaches 5 elements
 
+    ```lua
+   function minebase.HUD.complex:newList(player, name, position, spacing, rules)
+    ```
+    * `player` : same as `createContainer`
+    * `name` : same as `createContainer`
+    * `position` : `<position>` : the position on the screen.
+    * `spacing` : `<number>` : the spacing between elements. (_default 10px_)
+    * `rules` : `<table>` : additional rules can be set passing this table. Additional rules:
+        * `direction` : `{x=<number>,y=<number>}` : the direction which the list appends: (_default {x=-1, y=0}_)
+            * y=  [-1 : up]  [1 : down]
+            * x=  [-1 : left] : [1 : right] 
+        * `expandable` : `<boolean>` : if _true_ checks **expand_limit** and warps the list (_default false_)
+        * `expand_limit` : `<number>` : max number of elements before the list warps (_default 5_)
+        * `expand_direction` : `{x=<number>,y=<number>}` : the direction which the list warps: (_default {x=-1, y=0}_)
+            * y=  [-1 : up]  [1 : down]
+            * x=  [-1 : left] : [1 : right] 
+        * `v_spacing` : `<number>` : spacing when the list warps (_default 10_)
+    * returns the container. 
+
+    The example list in the image has these for rules:
+    ```lua
+    rules = {
+        direction = { x = 0, y = 1 };
+        expandable = true,
+        expand_limit = 5,
+        expand_direction = { x = -1, y = 0 },
+        spacing = 48,
+        v_spacing = 48
+    }
+    ```
+
+    The List element also provides new methods:
+    1. ### **listAdd**
+        Use this method instead of default _addElement_.
+        ```lua
+        function list:listAdd(el)
+        ```
+        * `el` : `<element_table>` : the element to append to the list:
+            ```lua
+            {
+                name = "example1",--Name of the component
+                element = {...}--The component
+            }
+            ```
+
+    2. ### **listRemove**
+        Use this method instead of default _removeElement_.
+        ```lua
+        function list:listRemove(nm)
+        ```
+        * `nm` : `<string>` : the name of the element to remove from the list
+
+## `minebase.effects`
+//TODO
 
 ## Easy access 
 Some functions and some lists are easly provided in: `minebase.m`. 
