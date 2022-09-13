@@ -53,7 +53,7 @@ minetest.register_globalstep(function(dtime)
                 el:finish();
                 rem[#rem + 1] = i;
             else
-                el:tick();
+                el:tick(dtime);
             end
         end
     end

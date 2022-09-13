@@ -1,6 +1,3 @@
-dofile(minetest.get_modpath("minebase") .. '/scripts/effects/setup_effects.lua');
-dofile(minetest.get_modpath("minebase") .. '/scripts/effects/adv_effects.lua');
-
 --[[
     Controlla se un effetto è presente per un giocatore dentro la lista
     
@@ -28,8 +25,8 @@ minebase.effects.functions.removeAll = function(player)
                 data.job:cancel();
             end
             key:reset_effect(player);
-            player_comp.effects[key] = nil;
         end
+        player_comp.effects ={};
     end
 end
 

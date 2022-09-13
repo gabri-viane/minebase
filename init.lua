@@ -3,13 +3,13 @@ minebase = {};
 
 dofile(minetest.get_modpath("minebase") .. "/scripts/remake/import.lua");
 
-dofile(minetest.get_modpath("minebase") .. "/scripts/comms/commons.lua");
-dofile(minetest.get_modpath("minebase") .. "/scripts/HUD/HUD.lua");
-dofile(minetest.get_modpath("minebase") .. "/scripts/effects/effects.lua");
+dofile(minetest.get_modpath("minebase") .. "/scripts/comms/import.lua");
+dofile(minetest.get_modpath("minebase") .. "/scripts/commands/import.lua");
+dofile(minetest.get_modpath("minebase") .. "/scripts/HUD/import.lua");
+dofile(minetest.get_modpath("minebase") .. "/scripts/effects/import.lua");
 
 dofile(minetest.get_modpath("minebase") .. "/scripts/registers.lua");
-
-dofile(minetest.get_modpath("minebase") .. "/scripts/m.lua");
+dofile(minetest.get_modpath("minebase") .. "/scripts/api.lua");
 
 dofile(minetest.get_modpath("minebase") .. "/scripts/testing.lua");
 --[[
@@ -41,7 +41,7 @@ minebase.commands.functions.addCommand("minebase", "test2",
     function(name, params)
         local player = minetest.get_player_by_name(name);
 
-        local list = minebase.HUD.complex:newList(player, "LIST_HUD", minebase.screen.top_right, 48,
+        local list = minebase.HUD.complex:newList(player, "LIST_HUD", minebase.statics.screen.top_right, 48,
             { direction = { x = 0, y = 1 }, expandable = true, expand_direction = { x = -1, y = 0 }, v_spacing = 48 });
         list:addOffset(-24, 24);
         list:registerToScreen();
@@ -81,9 +81,9 @@ minebase.commands.functions.addCommand("minebase", "test4",
         local t = math.random(1, 12);
         local nm = "info_"
         if t % 2 == 0 then
-            nm = nm.."IB_"..t;
+            nm = nm .. "IB_" .. t;
         else
-            nm = nm.."BB_"..t;
+            nm = nm .. "BB_" .. t;
         end
         list:listRemove(nm);
         return "Removed " .. nm .. " from list";
@@ -91,4 +91,4 @@ minebase.commands.functions.addCommand("minebase", "test4",
 )
 
 
-return minebase.m;
+return minebase.api;

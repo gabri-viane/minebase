@@ -34,10 +34,9 @@ minebase.HUD.functions.removeContainer = function(container)
                 local id = container.elements[i].id;
                 container.owner:hud_remove(id);
             elseif el.type == 'container' then
-                minebase.HUD.functions.removeContainer(el.drawable);
+                el.drawable:delete();
             end
         end
-        container.elements = nil;
         minebase.screen:removeFromScreen(container);
     end
 end

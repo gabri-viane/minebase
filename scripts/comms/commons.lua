@@ -1,100 +1,103 @@
-dofile(minetest.get_modpath('minebase') .. '/scripts/comms/setup_commons.lua');
-dofile(minetest.get_modpath('minebase') .. '/scripts/comms/colors.lua');
-dofile(minetest.get_modpath('minebase') .. '/scripts/comms/screen.lua');
-dofile(minetest.get_modpath('minebase') .. '/scripts/comms/commands.lua');
+--Creo lo spazio di lavoro per gli elementi statici
+minebase.statics = {
+    screen = {
+        top_left = { x = 0, y = 0 },
+        top_center = { x = 0.5, y = 0 },
+        top_right = { x = 1, y = 0 },
+        center_left = { x = 0, y = 0.5 },
+        center_center = { x = 0.5, y = 0.5 },
+        center_right = { x = 1, y = 0 },
+        bottom_left = { x = 0, y = 1 },
+        bottom_center = { x = 0.5, y = 1 },
+        bottom_right = { x = 1, y = 1 }
+    },
+    size = {
+        small_s = { x = 4, y = 4 },
+        small = { x = 8, y = 8 },
+        small_l = { x = 16, y = 16 },
+        medium_s = { x = 24, y = 24 },
+        medium = { x = 32, y = 32 },
+        medium_l = { x = 44, y = 44 },
+        large_s = { x = 56, y = 56 },
+        large = { x = 64, y = 64 },
+        large_l = { x = 72, y = 72 }
+    },
+    directions = {
+        up = { x = 0, y = -1 },
+        down = { x = 0, y = 1 },
+        right = { x = 1, y = 0 },
+        left = { x = -1, y = 0 },
+        up_left = { x = -1, y = -1 },
+        up_right = { x = 1, y = -1 },
+        down_right = { x = 1, y = 1 },
+        down_left = { x = -1, y = 1 }
+    },
+    colors = {
+        red_text = 0xFF0000,
+        red_light = '#FF0000FF',
+        red_dark = '#B20000FF',
 
-function minebase.functions:registerTx (to_subscribe)
-    if to_subscribe.dt and to_subscribe.finish and to_subscribe.tick then
-        self.tx[#self.tx+1] = to_subscribe;
-    end
-end
+        orange_text = 0xFFA500,
+        orange_light = '#FFA500FF',
+        orange_dark = '#B27300FF',
 
-minebase.functions.stringToTokens = function(string)
-    local ps = {};
-    for w in string:gmatch("([%a%d_-]+)") do
-        ps[#ps + 1] = w;
-    end
-    return ps;
-end
+        yellow_text = 0xFFFF00,
+        yellow_light = '#FFFF00FF',
+        yellow_dark = '#B2B200FF',
 
-minebase.functions.numberToTimer = function(seconds)
-    seconds = math.floor(seconds);
-    local minutes = math.floor(seconds / 60);
-    seconds = math.floor(seconds - minutes * 60);
-    return minutes .. ":" .. seconds;
-end
+        green_text = 0x8fce00,
+        green_light = '#8fce00ff',
+        green_dark = '#5b8300ff',
 
-minebase.functions.sizeToString = function (size)
-    return size.x.."x"..size.y;
-end
+        sky_blue_text = 0x2986cc,
+        sky_blue_light = '#2986ccff',
+        sky_blue_dark = '#206ba3ff',
 
-minebase.functions.warpString = function(string_to_warp, max_length)
-    return minebase.functions.warpString_CN(minebase.functions.splitString(string_to_warp), max_length);
-end
+        blue_text = 0x0000cc,
+        blue_light = '#0000ccff',
+        blue_dark = '#00008eff',
 
-minebase.functions.warpString_CN = function(warped, max_length, res, index, call)
-    res = res or {};
-    local counter = 0;
-    index = index or 1;
-    call = call or 0;
-    for i = index, #warped do
-        local word = warped[i];
-        counter = counter + word:len();
-        if counter < max_length then
-            counter = counter + 1;
-            res[#res + 1] = word
-        else
-            warped[i] = '\n' .. warped[i];
-            call = minebase.functions.warpString_CN(warped, max_length, res, i, call + 1)[2];
-            break;
-        end
-    end
-    return { table.concat(res, " "), call };
-end
+        violet_text = 0xee82ee,
+        violet_light = '#ee82eeff',
+        violet_dark = '#a65ba6ff',
 
-minebase.functions.splitString = function(inputstr, sep)
-    if sep == nil then
-        sep = "%s"
-    end
-    local t = {}
-    for str in string.gmatch(inputstr, "([^" .. sep .. "]+)") do
-        t[#t + 1] = str;
-    end
-    return t
-end
+        purple_text = 0x800080,
+        purple_light = '#800080ff',
+        purple_dark = '#660066ff',
 
-minebase.functions.convertStringTo = function(from, to)
-    if from then
-        if to then
-            if to == 'int' or to == 'integer' then
-                return tonumber(from);
-            elseif to == 'hex' then
-                return tonumber(from, 16);
-            elseif to == 'bool' or to == 'boolean' then
-                local stringtoboolean = { ["true"] = true, ["false"] = false, ["0"] = false }; --Il controllo è più veloce così
-                return stringtoboolean[from];
-            end
-        end
-        return from;
-    else
-        return nil;
-    end
-end
+        white_text = 0xe5e5e5,
+        white_light = '#ffffffff',
+        white_dark = '#e5e5e5ff',
 
-minebase.commands.functions.addCommand("minebase", "minebase", {
-    {
-        name = "command",
-        type = "string",
-        optional = true
+        black_text = 0x191919,
+        black_light = '#191919ff',
+        black_dark = '#000000ff'
     }
-},
-    {},
-    function(name, params)
-        if params.command then
-            if params.command == "effects" then
-                return minebase.effects.functions.getHelp();
-            end
-        end
-    end)
+};
 
+--Contiente tutte le funzioni di utilizzo vario
+minebase.functions = {};
+minebase.functions.tx = {};
 
+--Contiene tutti i dati sui colori
+minebase.colors = {};
+minebase.colors.functions = {};
+
+minebase.screen = {};
+
+minebase.commands = {};
+minebase.commands.functions = {};
+minebase.commands.list = {};
+
+--Conntiene tutti i dati riguardo la gestione HUD
+minebase.HUD = {};
+minebase.HUD.functions = {};
+minebase.HUD.complex = {};
+minebase.HUD.tx = {};
+minebase.HUD.animations = {};
+
+--Contiene tutti i dati sugli effetti
+minebase.effects = {};
+minebase.effects.functions = {};
+minebase.effects.list = {};
+minebase.effects.players = {};

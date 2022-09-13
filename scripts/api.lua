@@ -1,8 +1,8 @@
 --Contains quicks functions and references of @minebase mod
-minebase.m = {};
+minebase.api = {};
 
 --List of effects available
-minebase.m.effects = minebase.effects.list;
+minebase.api.effects = minebase.statics.effects;
 
 --A container can be registered on a player screen.
 --If it's registered you can get the container back passing
@@ -10,7 +10,7 @@ minebase.m.effects = minebase.effects.list;
 --@param player The player you want the screen (userdata)
 --@param container_name The container you want back (string)
 --@returns The container request if exists.
-minebase.m.getPlayerScreen = function(player, container_name)
+minebase.api.getPlayerScreen = function(player, container_name)
     return minebase.screen:get(player, container_name);
 end
 
@@ -19,20 +19,20 @@ end
 --@param effect The effect to use (from the table: #minebase.m.effects or #minebase.effects.list) (table)
 --@param seconds The duration in seconds of the effect applied (number)
 --@param amplifier The effect amplifier (a number, if exceeds the max id it's set to 1)
-minebase.m.addEffectToPlayer = function(player, effect, seconds, amplifier)
+minebase.api.addEffectToPlayer = function(player, effect, seconds, amplifier)
     minebase.effects.functions.add_effect(player, effect, amplifier, seconds);
 end
 
 --Remove effect from a specified player, also handles the HUD
 --@param player The player to remove the effect (userdata)
 --@param effect The effect to remove (from the table: #minebase.m.effects or #minebase.effects.list) (table)
-minebase.m.removEffectFromPlayer = function(player, effect)
+minebase.api.removEffectFromPlayer = function(player, effect)
     minebase.effects.functions.forcr_remove_effect(player, effect);
 end
 
 --Remove all effects from a specified player, also handles the HUD
 --@param player The player to remove the effects (userdata)
-minebase.m.clearEffectsPlayer = function(player)
+minebase.api.clearEffectsPlayer = function(player)
     minebase.effects.functions.removeAll(player);
 end
 
@@ -47,7 +47,7 @@ end
     violet...,purple...
 ]]
 --@returns The color requested or black_light
-minebase.m.getColor = function(color_name)
+minebase.api.getColor = function(color_name)
     local ps = {};
     for w in color_name:gmatch("([^_]+)") do
         ps[#ps + 1] = w;
@@ -62,7 +62,7 @@ end
 --@param name The name to get the color back
 --@param variant The type of the color
 --@pram value A #RGBA string (eg.: "#123456AF") or a function that returns an #RGBA string
-minebase.m.addColor = function(name, variant, value)
+minebase.api.addColor = function(name, variant, value)
     minebase.colors.functions.addColor(name, variant, value);
 end
 
@@ -84,7 +84,7 @@ end
 ]]
 --@param privileges A list of privileges
 --@param description A description of the command
-minebase.m.addCommand = function(mod_name, command_alias, param_list, callback_function, privileges, description)
+minebase.api.addCommand = function(mod_name, command_alias, param_list, callback_function, privileges, description)
     minebase.commands.functions.addCommand(mod_name, command_alias, param_list, privileges, callback_function,
         description);
 end

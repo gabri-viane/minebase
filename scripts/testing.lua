@@ -10,23 +10,26 @@ minebase.commands.functions.addCommand("minebase", "test", {
         local player = minetest.get_player_by_name(name);
         if params.command then
             if params.command == "effects" then
-                minebase.m.addEffectToPlayer(player, minebase.m.effects.jump_boost, 90, 3);
-                minebase.m.addEffectToPlayer(player, minebase.m.effects.speed_boost, 45, 4);
-                minebase.m.addEffectToPlayer(player, minebase.m.effects.night_vision, 120, 3);
+                minebase.api.addEffectToPlayer(player, minebase.api.effects.jump_boost, 90, 3);
+                minebase.api.addEffectToPlayer(player, minebase.api.effects.speed_boost, 45, 4);
+                minebase.api.addEffectToPlayer(player, minebase.api.effects.night_vision, 120, 3);
                 return "Added some effects as example"
             elseif params.command == "hudtext" then
                 local container = minebase.screen:get(player, "test_hudtext1");
                 if not container then
                     container = minebase.HUD.complex:newTextBoxT(player, "test_hudtext1",
-                        minebase.screen.bottom_left, 30, 17.5, "Test title", minebase.colors.list.orange.light,
+                        minebase.statics.screen.bottom_left, 30, 17.5, "Test title", minebase.statics.colors.orange_light
+                        ,
                         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean rhoncus elementum diam, et blandit dolor venenatis ut. In fermentum hendrerit tristique. Cras pharetra ornare orci et aliquam. Mauris dapibus elit nec purus vehicula placerat."
-                        , minebase.colors.list.white.dark);
+                        , minebase.statics.colors.white_dark);
                     container:addOffset(10, -(17.5 * 10 + 4 * 2 + 10));
                     container:registerToScreen();
-                    container = minebase.HUD.complex:newTextBoxT(player, "test_hudtext2", minebase.screen.bottom_center,
-                        20, 24, "2. TITLE", minebase.colors.list.red.light,
+                    container = minebase.HUD.complex:newTextBoxT(player, "test_hudtext2",
+                        minebase.statics.screen.bottom_center
+                        ,
+                        20, 24, "2. TITLE", minebase.statics.colors.red_light,
                         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean rhoncus elementum diam, et blandit dolor venenatis ut. In fermentum hendrerit tristique."
-                        , minebase.colors.list.black.light);
+                        , minebase.statics.colors.black_light);
                     container:addOffset(0, -(24 * 10 + 4 * 2 + 80));
                     container:registerToScreen();
                     return "Added Container:" .. container.name;
@@ -39,8 +42,9 @@ minebase.commands.functions.addCommand("minebase", "test", {
             elseif params.command == "hudlist" then
                 local list = minebase.screen:get(player, "LIST_HUD");
                 if not list then
-                    list = minebase.HUD.complex:newList(player, "LIST_HUD", minebase.screen.top_right, 48,
-                        { direction = { x = 0, y = 1 }, expandable = true, expand_direction = { x = -1, y = 0 },
+                    list = minebase.HUD.complex:newList(player, "LIST_HUD", minebase.statics.screen.top_right, 48,
+                        { direction = minebase.statics.directions.down, expandable = true,
+                            expand_direction = minebase.statics.directions.left,
                             v_spacing = 48 });
                     list:addOffset(-24, 24);
                     list:registerToScreen();
@@ -69,7 +73,7 @@ minebase.commands.functions.addCommand("minebase", "test", {
                             end
                             list:listRemove(nm);
                         end
-                        return "List already exists: removing random elements from list (they may not exist)" ;
+                        return "List already exists: removing random elements from list (they may not exist)";
                     else
                         for i = 1, 5 do
                             local container;
@@ -85,6 +89,16 @@ minebase.commands.functions.addCommand("minebase", "test", {
                         return "List already exists: adding some elements to list";
                     end
                 end
+
+            elseif params.command == "slide" then
+                local container = minebase.screen:get(player, "info_IB_X");
+                if not container then
+                    container = minebase.HUD.complex:newIconBoxT(player, "info_IB_X",
+                        "minebase_question_icon.png", minebase.statics.screen.center_center);
+                    container:registerToScreen();
+                    container = minebase.HUD.animations.injectSlide(container);
+                end
+                container:slide({ x = math.random(-100, 100), y = math.random(-100, 100) }, math.random() * 2);
             end
         end
     end)

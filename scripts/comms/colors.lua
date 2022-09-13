@@ -1,72 +1,19 @@
-minebase.colors.list = {
-    red = {
-        text = 0xFF0000,
-        light = '#FF0000FF',
-        dark = '#B20000FF'
-    },
-    orange = {
-        text = 0xFFA500,
-        light = '#FFA500FF',
-        dark = '#B27300FF'
-    },
-    yellow = {
-        text = 0xFFFF00,
-        light = '#FFFF00FF',
-        dark = '#B2B200FF'
-    },
-    green = {
-        text = 0x8fce00,
-        light = '#8fce00ff',
-        dark = '#5b8300ff'
-    },
-    sky_blue = {
-        text = 0x2986cc,
-        light = '#2986ccff',
-        dark = '#206ba3ff'
-    },
-    blue = {
-        text = 0x0000cc,
-        light = '#0000ccff',
-        dark = '#00008eff'
-    },
-    violet = {
-        text = 0xee82ee,
-        light = '#ee82eeff',
-        dark = '#a65ba6ff'
-    },
-    purple = {
-        text = 0x800080,
-        light = '#800080ff',
-        dark = '#660066ff'
-    },
-    white = {
-        text = 0xe5e5e5,
-        light = '#ffffffff',
-        dark = '#e5e5e5ff'
-    },
-    black = {
-        text = 0x191919,
-        light = '#191919ff',
-        dark = '#000000ff'
-    },
-    random = {
-        rnd1 = function()
-            local av = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
-            return '#' .. av[math.random(1, #av + 1)]
-                .. av[math.random(1, #av + 1)]
-                .. av[math.random(1, #av + 1)]
-                .. av[math.random(1, #av + 1)]
-                .. av[math.random(1, #av + 1)]
-                .. av[math.random(1, #av + 1)]
-                .. av[math.random(1, #av + 1)]
-                .. av[math.random(1, #av + 1)];
-        end
-    }
-}
+minebase.colors.functions.random = function()
+    local av = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+    return '#' .. av[math.random(1, #av + 1)]
+        .. av[math.random(1, #av + 1)]
+        .. av[math.random(1, #av + 1)]
+        .. av[math.random(1, #av + 1)]
+        .. av[math.random(1, #av + 1)]
+        .. av[math.random(1, #av + 1)]
+        .. av[math.random(1, #av + 1)]
+        .. av[math.random(1, #av + 1)];
+end
 
 --Ritorna il colore richiesto come stringa se esistente altrimenti la variante light del colore black
 minebase.colors.functions.getColorString = function(color_name, type)
-    local value = (minebase.colors.list[color_name or 'black'] or minebase.colors.list.black.light)[type or 'light'] or minebase.colors.list.black.light;
+    local value = minebase.statics.colors[(color_name or 'black') .. "_" .. (type or 'light')] or
+        minebase.statics.colors.black_light;
     if type(value) == "function" then
         value = value();
     end
@@ -85,9 +32,8 @@ end
 --Aggiunge un colore, ritorna il colore aggiunto se è stato inserito altrimenti false
 minebase.colors.functions.addColor = function(color_name, type, value)
     if color_name and type and value then
-        minebase.colors.list[color_name] = {};
-        minebase.colors.list[color_name][type] = value;
-        return minebase.colors.list[color_name][type];
+        minebase.statics.colors[color_name.."_"..type] = value;
+        return true;
     end
     return false;
 end

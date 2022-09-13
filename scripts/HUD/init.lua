@@ -28,5 +28,3 @@ minebase.HUD.functions.newImage = function(image, scale, offset, direction, alig
         type = "def"
     }
 end
-
-dofile(minetest.get_modpath("minebase")..'/scripts/HUD/HUD_container.lua');
