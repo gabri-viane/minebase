@@ -141,7 +141,7 @@ function minebase.HUD.animations.injectAnimation(container)
             finish = function()
                 --fix finale offset
                 local tx_ = container.anim.text_anim_dx;
-                container:updateElement(tx_.to_animate, { { name = "text", value = tx_.altered } });
+                container:updateElement(tx_.to_animate, { { name = "text", value = "" } });
             end,
             tick = function(self, dtime)
                 local tx_ = container.anim.text_anim_dx;
@@ -164,6 +164,9 @@ function minebase.HUD.animations.injectAnimation(container)
                 container:updateElement(tx_.to_animate, { { name = "text", value = tx_.altered } });
                 if math.floor(tx_.current) == t_len then
                     tx_.current = 0;
+                    for i=1, tx_.max do
+                        tx_.base_text =  " "..tx_.base_text;
+                    end
                     if tx_.mode == "repeat" then
                         tx_.repeat_count = tx_.repeat_count - 1;
                         if tx_.repeat_count == 0 then
