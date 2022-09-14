@@ -27,6 +27,7 @@ end);
 minetest.register_on_joinplayer(function(player, last_login)
     minebase.screen:enableScreen(player);
     minebase.HUD.complex:newEffectList(player, 1);
+    minetest.log(dump(player:get_look_horizontal()));
 end);
 --Giocatore abbandona
 minetest.register_on_leaveplayer(function(player, timed_out)

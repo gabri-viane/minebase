@@ -271,7 +271,7 @@ minebase.HUD.functions.createLightContainer = function(player, name, position, o
         return self.elements[1];
     end
 
-    function container:getID(nm)
+    function container:getID()
         return 1;
     end
 

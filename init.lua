@@ -1,17 +1,20 @@
 ---@diagnostic disable-next-line: lowercase-global
 minebase = {};
 
-dofile(minetest.get_modpath("minebase") .. "/scripts/remake/import.lua");
+dofile(minetest.get_modpath("minebase_core") .. "/scripts/utils/image.lua");
 
-dofile(minetest.get_modpath("minebase") .. "/scripts/comms/import.lua");
-dofile(minetest.get_modpath("minebase") .. "/scripts/commands/import.lua");
-dofile(minetest.get_modpath("minebase") .. "/scripts/HUD/import.lua");
-dofile(minetest.get_modpath("minebase") .. "/scripts/effects/import.lua");
 
-dofile(minetest.get_modpath("minebase") .. "/scripts/registers.lua");
-dofile(minetest.get_modpath("minebase") .. "/scripts/api.lua");
+dofile(minetest.get_modpath("minebase_core") .. "/scripts/remake/import.lua");
 
-dofile(minetest.get_modpath("minebase") .. "/scripts/testing.lua");
+dofile(minetest.get_modpath("minebase_core") .. "/scripts/comms/import.lua");
+dofile(minetest.get_modpath("minebase_core") .. "/scripts/commands/import.lua");
+dofile(minetest.get_modpath("minebase_core") .. "/scripts/HUD/import.lua");
+dofile(minetest.get_modpath("minebase_core") .. "/scripts/effects/import.lua");
+
+dofile(minetest.get_modpath("minebase_core") .. "/scripts/registers.lua");
+dofile(minetest.get_modpath("minebase_core") .. "/scripts/api.lua");
+
+dofile(minetest.get_modpath("minebase_core") .. "/scripts/testing.lua");
 --[[
 minebase.commands.functions.addCommand("minebase", "test",
     {}, {},

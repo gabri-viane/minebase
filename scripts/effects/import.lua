@@ -1,5 +1,5 @@
-dofile(minetest.get_modpath("minebase") .. '/scripts/effects/init.lua');
-dofile(minetest.get_modpath("minebase") .. "/scripts/effects/effects.lua");
+dofile(minetest.get_modpath("minebase_core") .. '/scripts/effects/init.lua');
+dofile(minetest.get_modpath("minebase_core") .. "/scripts/effects/effects.lua");
 
 minebase.commands.functions.addCommand(
     "minebase",

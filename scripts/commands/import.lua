@@ -1,4 +1,4 @@
-dofile(minetest.get_modpath("minebase") .. "/scripts/commands/commands.lua");
+dofile(minetest.get_modpath("minebase_core") .. "/scripts/commands/commands.lua");
 
 minebase.commands.functions.addCommand("minebase", "minebase", {
     {

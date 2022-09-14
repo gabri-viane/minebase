@@ -1,1 +1,1 @@
-dofile(minetest.get_modpath("minebase").."/scripts/remake/player.lua");
+dofile(minetest.get_modpath("minebase_core").."/scripts/remake/player.lua");

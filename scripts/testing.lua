@@ -99,6 +99,39 @@ minebase.commands.functions.addCommand("minebase", "test", {
                     container = minebase.HUD.animations.injectSlide(container);
                 end
                 container:slide({ x = math.random(-100, 100), y = math.random(-100, 100) }, math.random() * 2);
+            elseif params.command == "fade" then
+                local container = minebase.screen:get(player, "info_IB_Y");
+                if not container then
+                    local img = minebase.HUD.functions.newImage("test1.png^[lowpart:50:test2.png");
+                    container = minebase.HUD.functions.createLightContainer(player, "info_IB_Y",
+                        minebase.statics.screen.center_center, nil, img);
+                    container:registerToScreen();
+                    container = minebase.HUD.animations.injectAlphaFade(container);
+                end
+                container:alphaFadeS("icon", 255, 0, 2);
+            elseif params.command == "anim" then
+                local container = minebase.screen:get(player, "info_IB_Z");
+                if not container then
+                    local img = minebase.HUD.functions.newImage("sprite.png");
+                    container = minebase.HUD.functions.createLightContainer(player, "info_IB_Z",
+                        minebase.statics.screen.center_center, nil, img);
+                    container:registerToScreen();
+                    container = minebase.HUD.animations.injectAnimation(container);
+                end
+                container:frameAnimation("icon", 4, 0.4, 10, 2);
+            elseif params.command == "animt" then
+                local container = minebase.screen:get(player, "info_IB_W");
+                if not container then
+                    local img = minebase.HUD.functions.newText("Prova di un testo che scorre");
+                    container = minebase.HUD.functions.createLightContainer(player, "info_IB_W",
+                        minebase.statics.screen.center_center, nil, img);
+                    container:registerToScreen();
+                    container = minebase.HUD.animations.injectAnimation(container);
+                end
+                container:textAnimation("text", 6, 0.5, 50,3);
+            elseif params.command == "imgread" then
+                local width, height = GetImageWidthHeight(minetest.get_modpath("minebase") .. "/textures/test1.png");
+                minetest.log("Dimensions:" .. width .. "x" .. height);
             end
         end
     end)

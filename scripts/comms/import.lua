@@ -1,6 +1,6 @@
-dofile(minetest.get_modpath('minebase') .. '/scripts/comms/commons.lua');
-dofile(minetest.get_modpath('minebase') .. '/scripts/comms/colors.lua');
-dofile(minetest.get_modpath('minebase') .. '/scripts/comms/screen.lua');
+dofile(minetest.get_modpath('minebase_core') .. '/scripts/comms/commons.lua');
+dofile(minetest.get_modpath('minebase_core') .. '/scripts/comms/colors.lua');
+dofile(minetest.get_modpath('minebase_core') .. '/scripts/comms/screen.lua');
 
 function minebase.functions:registerTx(to_subscribe)
     if to_subscribe.dt and to_subscribe.finish and to_subscribe.tick then
