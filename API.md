@@ -1,5 +1,7 @@
 # Minebase API (_WORK IN PROGRSS_)
 
+## DOCUMENT NOT UP TO DATE: `minebase.colors.list` AND `minebase.screen` STATIC DATA IS NOW MOVED IN `minebase.statics`
+
 This mod currently adds some HUD methods and other utility functions. It exports just one table: `minebase`.
 This table has currently the following elements:
 - `minebase.statics` : has static data
