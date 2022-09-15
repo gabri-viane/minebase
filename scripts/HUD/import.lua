@@ -1,4 +1,4 @@
-dofile(minetest.get_modpath("minebase_core")..'/scripts/HUD/init.lua');
-dofile(minetest.get_modpath("minebase_core")..'/scripts/HUD/container.lua');
-dofile(minetest.get_modpath("minebase_core")..'/scripts/HUD/HUD.lua');
-dofile(minetest.get_modpath("minebase_core")..'/scripts/HUD/animations/animations.lua');
+dofile(minebase.scripts..'/HUD/init.lua');
+dofile(minebase.scripts..'/HUD/container.lua');
+dofile(minebase.scripts..'/scripts/HUD/HUD.lua');
+dofile(minebase.scripts..'/scripts/HUD/animations/animations.lua');

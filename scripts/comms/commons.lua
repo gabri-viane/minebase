@@ -96,6 +96,11 @@ minebase.HUD.complex = {};
 minebase.HUD.tx = {};
 minebase.HUD.animations = {};
 
+--Conntiene tutti i dati riguardo la gestione Formspec
+minebase.FS = {};
+minebase.FS.functions = {};
+minebase.FS.complex = {};
+
 --Contiene tutti i dati sugli effetti
 minebase.effects = {};
 minebase.effects.functions = {};

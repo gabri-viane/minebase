@@ -1,4 +1,4 @@
-dofile(minetest.get_modpath("minebase_core") .. "/scripts/commands/commands.lua");
+dofile(minebase.scripts .. '/commands/commands.lua');
 
 minebase.commands.functions.addCommand("minebase", "minebase", {
     {
@@ -15,3 +15,10 @@ minebase.commands.functions.addCommand("minebase", "minebase", {
             end
         end
     end)
+
+    minebase.commands.functions.addCommand("minebase", "fs", {
+    },
+        {},
+        function(name, params)
+            minebase.FS.functions:generateInventory(name);
+        end)
