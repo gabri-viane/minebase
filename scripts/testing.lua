@@ -122,13 +122,16 @@ minebase.commands.functions.addCommand("minebase", "test", {
             elseif params.command == "animt" then
                 local container = minebase.screen:get(player, "info_IB_W");
                 if not container then
-                    local img = minebase.HUD.functions.newText("Prova di un testo che scorre");
+                    local img = minebase.HUD.functions.newText("Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                        ..
+                        " Aenean rhoncus elementum diam, et blandit dolor venenatis ut. In fermentum hendrerit tristique. "
+                        .. "Cras pharetra ornare orci et aliquam. Mauris dapibus elit nec purus vehicula placerat.");
                     container = minebase.HUD.functions.createLightContainer(player, "info_IB_W",
                         minebase.statics.screen.center_center, nil, img);
                     container:registerToScreen();
                     container = minebase.HUD.animations.injectAnimation(container);
                 end
-                container:textAnimation("text", 6, 0.5, 50,3);
+                container:textAnimation("text", 10, 0.5, 50, 3);
             elseif params.command == "imgread" then
                 local width, height = GetImageWidthHeight(minetest.get_modpath("minebase") .. "/textures/test1.png");
                 minetest.log("Dimensions:" .. width .. "x" .. height);
