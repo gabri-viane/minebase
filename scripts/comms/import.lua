@@ -1,4 +1,4 @@
-dofile(minebase.scripts..'/comms/commons.lua');
+dofile(minebase.scripts..'/comms/init.lua');
 dofile(minebase.scripts..'/comms/colors.lua');
 dofile(minebase.scripts..'/comms/screen.lua');
 
@@ -7,6 +7,13 @@ function minebase.functions:registerTx(to_subscribe)
         self.tx[#self.tx + 1] = to_subscribe;
     end
 end
+
+function minebase.functions:registerDx(to_subscribe)
+    if to_subscribe.on_tick and to_subscribe.on_finish then
+        self.dx[#self.dx + 1] = to_subscribe;
+    end
+end
+
 
 minebase.functions.stringToTokens = function(string)
     local ps = {};

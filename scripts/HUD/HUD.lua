@@ -282,9 +282,9 @@ function minebase.HUD.complex:newTextBoxT(player, name, position, width, height,
     local text_hud = minebase.HUD.functions.newText(warp_text, { x = line_w - 20, y = line_h - 24 }, { x = 10, y = 36 },
         text_color, nil, { x = 1, y = 1 }, 1.1, nil, 5);
     local container = minebase.HUD.functions.createContainer(player, name, position);
-    container:addElements({ { name = "box", element = box_hud, type = "def" },
-        { name = "title", element = title_hud, type = "def" },
-        { name = "text", element = text_hud, type = "def" } });
+    container:addElements({ { name = "box", element = box_hud },
+        { name = "title", element = title_hud },
+        { name = "text", element = text_hud } });
     return container;
 end
 
@@ -292,7 +292,7 @@ function minebase.HUD.complex:newList(player, name, position, spacing, rules)
     local container = minebase.HUD.functions.createContainer(player, name, position);
     container.as = "list";
 
-    container.datax = {
+    local _dx = {
         direction = minebase.statics.directions.right; --Direzione:y? -1=alto:1=basso   x? -1=sinistra,1=destra
         expandable = false, --Se true allora guarda expand_limit per sapere dopo quanti elementi iniziare ad un'altro offset
         expand_limit = 5,
@@ -304,13 +304,16 @@ function minebase.HUD.complex:newList(player, name, position, spacing, rules)
     };
 
     if rules then
-        local dx = container.datax;
-        dx.direction = rules.direction or dx.direction;
-        dx.expandable = rules.expandable or false;
-        dx.expand_limit = rules.expand_limit or dx.expand_limit;
-        dx.expand_direction = rules.expand_direction or dx.expand_direction;
-        dx.v_spacing = rules.v_spacing or dx.v_spacing;
+        _dx.direction = rules.direction or _dx.direction;
+        _dx.expandable = rules.expandable or false;
+        _dx.expand_limit = rules.expand_limit or _dx.expand_limit;
+        _dx.expand_direction = rules.expand_direction or _dx.expand_direction;
+        _dx.v_spacing = rules.v_spacing or _dx.v_spacing;
     end
+
+    container:forceOffset(_dx.direction.x * -_dx.spacing, _dx.direction.y * -_dx.spacing);
+
+    container.datax = _dx;
 
     if container.datax.expandable then
         function container:listAdd(el)
@@ -327,7 +330,7 @@ function minebase.HUD.complex:newList(player, name, position, spacing, rules)
             local y = dir.y * dx.spacing * colonna + ex_dir.y * dx.v_spacing * dx.row_index;
             dx.last_index = dx.last_index + 1;
             if el.element.type == "container" then
-                el.element:addOffset(x, y);
+                el.element:forceOffset(x, y);
                 to_add = el.element;
             elseif el.element.type == "def" then
                 to_add = minebase.HUD.functions.createLightContainer(player, el.name, nil,
@@ -397,7 +400,7 @@ function minebase.HUD.complex:newList(player, name, position, spacing, rules)
                 end
             end
             --Ricalcolo il numero della colonna
-            dx.row_index = math.floor((#self.elements - (#self.elements%dx.expand_limit)) / dx.expand_limit);
+            dx.row_index = math.floor((#self.elements - (#self.elements % dx.expand_limit)) / dx.expand_limit);
         end
     else
         --Deve essere passato el:{name=...,element=...}
@@ -407,7 +410,7 @@ function minebase.HUD.complex:newList(player, name, position, spacing, rules)
             local dir = dx.direction;
             dx.last_index = dx.last_index + 1;
             if el.element.type == "container" then
-                el.element:addOffset(dir.x * dx.spacing * dx.last_index, dir.y * dx.spacing *
+                el.element:forceOffset(dir.x * dx.spacing * dx.last_index, dir.y * dx.spacing *
                     dx.last_index);
                 to_add = el.element;
             elseif el.element.type == "def" then
@@ -418,9 +421,9 @@ function minebase.HUD.complex:newList(player, name, position, spacing, rules)
             self:addElement(el.name, to_add);
         end
 
-        function container:listRemove(name)
+        function container:listRemove(nm)
             self.datax.last_index = self.datax.last_index - 1;
-            local removed = container:removeElement(name);
+            local removed = container:removeElement(nm);
             if removed then
                 if removed.element then
                     removed.element.drawable:delete();

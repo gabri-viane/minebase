@@ -110,11 +110,39 @@ minebase.HUD.functions.createContainer = function(player, name, position, offset
         owner = player;
         position = position,
         type = "container";
+        base_offset = offset or { x = 0, y = 0 },
         offset = offset or { x = 0, y = 0 },
         elements = {},
         to_draw = true,
         to_refresh = false
     };
+
+    function container:serialize()
+        local serialized = {};
+        serialized.name = self.name;
+        serialized.owner_name = self.owner.name;
+        serialized.position = self.position;
+        serialized.type = self.type;
+        serialized.offset = self.offset;
+        serialized.elements = {};
+        for i = 1, #self.elements do
+            local to_ser = self.elements[i];
+            if to_ser.type == "def" then
+                serialized.elements[i] = {
+                    name = to_ser.name,
+                    type = "def",
+                    drawable = to_ser.drawable,
+                };
+            else
+                serialized.elements[i] = {
+                    name = to_ser.name,
+                    type = "container",
+                    drawable = to_ser.drawable:serialize(),
+                };
+            end
+        end
+        return serialized;
+    end
 
     --Restituisce direttamente l'elemento drawable
     function container:getElement(nm)
@@ -157,6 +185,11 @@ minebase.HUD.functions.createContainer = function(player, name, position, offset
     --Muove il continitore ad un nuovo offset (AGGIUNGE ALL'OFFSET CORRENTE, NON SOVRASCRIVE!!)
     --relativo alla posizione
     function container:addOffset(x, y)
+        self.base_offset = { x = self.base_offset.x + x, y = self.base_offset.y + y };
+        self:forceOffset(x, y);
+    end
+
+    function container:forceOffset(x, y)
         self.offset = { x = self.offset.x + x, y = self.offset.y + y };
         minebase.HUD.functions.reloadContainerOffsets(self, { x = x, y = y });
     end
@@ -191,7 +224,7 @@ minebase.HUD.functions.createContainer = function(player, name, position, offset
         };
         if element.type == 'container' then
             element:move(self.position); --Imposto l'eredità della posizione del contenitore
-            element:addOffset(self.offset.x, self.offset.y); --Aggiorno l'offset con quello di questo container
+            element:forceOffset(self.offset.x, self.offset.y); --Aggiorno l'offset con quello di questo container
             element:onRefreshRequest(function() --Imposto la funzione di refresh
                 minebase.HUD.functions.refreshContainer(element);
             end);
@@ -213,7 +246,7 @@ minebase.HUD.functions.createContainer = function(player, name, position, offset
             };
             if el.type == 'container' then
                 el:move(self.position)
-                el:addOffset(self.offset.x, self.offset.y);
+                el:forceOffset(self.offset.x, self.offset.y);
                 el:onRefreshRequest(function()
                     minebase.HUD.functions.refreshContainer(el);
                 end);
@@ -260,6 +293,32 @@ minebase.HUD.functions.createLightContainer = function(player, name, position, o
         to_draw = true,
         to_refresh = false
     };
+
+    function container:serialize()
+        local serialized = {};
+        serialized.name = self.name;
+        serialized.owner_name = self.owner.name;
+        serialized.position = self.position;
+        serialized.type = self.type;
+        serialized.offset = self.offset;
+        serialized.elements = {};
+
+        local to_ser = self.elements[1];
+        if to_ser.type == "def" then
+            serialized.elements[1] = {
+                name = to_ser.name,
+                type = "def",
+                drawable = to_ser.drawable,
+            };
+        else
+            serialized.elements[1] = {
+                name = to_ser.name,
+                type = "container",
+                drawable = to_ser.drawable:serialize(),
+            };
+        end
+        return serialized;
+    end
 
     --Restituisce direttamente l'elemento drawable
     function container:getElement()

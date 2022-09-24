@@ -24,6 +24,10 @@ function minebase.screen:get(player, container_name)
     return self.containers[player].named[container_name];
 end
 
+function minebase.screen:getAll(player, type)
+    return self.containers[player][type or "all"];
+end
+
 function minebase.screen:addToScreen(container)
     if container then
         local player = container.owner;

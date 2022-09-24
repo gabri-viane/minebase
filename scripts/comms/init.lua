@@ -78,6 +78,7 @@ minebase.statics = {
 --Contiente tutte le funzioni di utilizzo vario
 minebase.functions = {};
 minebase.functions.tx = {};
+minebase.functions.dx = {};
 
 --Contiene tutti i dati sui colori
 minebase.colors = {};
@@ -106,3 +107,9 @@ minebase.effects = {};
 minebase.effects.functions = {};
 minebase.effects.list = {};
 minebase.effects.players = {};
+
+--Inizializzo lo storage
+minebase.storage = {};
+
+--Inizializzo le utilità
+minebase.utils = {};

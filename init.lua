@@ -4,7 +4,6 @@ minebase.scripts = minetest.get_modpath("minebase") .. '/scripts';
 
 dofile(minebase.scripts.."/utils/image.lua");
 
-
 dofile(minebase.scripts.."/remake/import.lua");
 
 dofile(minebase.scripts.."/comms/import.lua");
@@ -12,6 +11,8 @@ dofile(minebase.scripts.."/commands/import.lua");
 dofile(minebase.scripts.."/HUD/import.lua");
 dofile(minebase.scripts.."/fs/import.lua");
 dofile(minebase.scripts.."/effects/import.lua");
+dofile(minebase.scripts.."/storage/import.lua");
+dofile(minebase.scripts.."/utils/lookingat.lua");
 
 dofile(minebase.scripts.."/registers.lua");
 dofile(minebase.scripts.."/api.lua");

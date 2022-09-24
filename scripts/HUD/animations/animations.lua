@@ -4,31 +4,32 @@ function minebase.HUD.animations.injectSlide(container)
     if not container.anim then
         container.anim = {};
     end
+
     container.anim.slide_dx = {
         clock = {
             dt = 0;
-            finish = function()
+            finish = function(self)
                 --fix finale offset
-                local cur_of = container.offset;
+                local cur_of = container.base_offset;
                 local to = container.anim.slide_dx.to;
-                container:addOffset(to.x - cur_of.x, to.y - cur_of.y);
+                container:addOffset(to.x - cur_of.x, to.y + cur_of.y);
             end,
             tick = function(self, dtime)
                 local sps = container.anim.slide_dx.step_per_second;
                 container:addOffset(sps.x * dtime, sps.y * dtime);
             end
         },
-        from = container.offset,
-        to = { x = 0, y = 0 },
+        from = container.base_offset,
+        to = { x = container.base_offset.x, y = container.base_offset.y },
         step_per_second = { x = 0, y = 0 } --Quanto devo fare in 1 secondo
     }
 
     function container:slide(to, seconds)
         local sx = self.anim.slide_dx;
-        sx.from = self.offset;
+        sx.from = self.base_offset;
         sx.to = to;
-        local dX = to.x - self.offset.x;
-        local dY = to.y - self.offset.y;
+        local dX = to.x;
+        local dY = to.y;
         local ddX = dX / seconds;
         local ddY = dY / seconds;
         sx.step_per_second = { x = ddX, y = ddY };

@@ -1,8 +1,8 @@
 -- functions
 minetest.register_globalstep(function(dtime)
     local tx = minebase.functions.tx;
+    local rem = {};
     if #tx > 0 then
-        local rem = {}
         for i = 1, #tx do
             local el = tx[i];
             if el then
@@ -19,20 +19,49 @@ minetest.register_globalstep(function(dtime)
             table.remove(tx, rem[i]);
         end
     end
+
+    tx = minebase.functions.dx;
+    rem = {};
+    if #tx > 0 then
+        for i = 1, #tx do
+            local el = tx[i];
+            if el and el:on_tick(dtime) then
+                rem[#rem + 1] = i;
+                el:on_finish(dtime);
+            end
+        end
+        for i = 1, #rem do
+            table.remove(tx, rem[i]);
+        end
+    end
 end);
 
 
 --SCREEN & HUD
 --Giocatore si unisce
 minetest.register_on_joinplayer(function(player, last_login)
-    minebase.screen:enableScreen(player);
-    minebase.HUD.complex:newEffectList(player, 1);
-    minetest.log(dump(player:get_look_horizontal()));
+    minebase.screen:enableScreen(player); --Enable Screen for player
+    minebase.HUD.complex:newEffectList(player, 1); --Add effects list to player (empty)
+    minebase.effects.functions.addEffectsToPlayer(player); --Enable Effects for player
+    minebase.storage:loadData(player); --Load player stored data
 end);
+
 --Giocatore abbandona
-minetest.register_on_leaveplayer(function(player, timed_out)
-    minebase.screen:disableScreen(player);
+local on_player_leave = function(player, timed_out)
+    minebase.storage:savePlayer(player);
+    minetest.after(2, function()
+        minebase.screen:disableScreen(player);
+    end)
+end;
+
+minetest.register_on_leaveplayer(on_player_leave)
+
+minetest.register_on_shutdown(function()
+    for _, player in ipairs(minetest.get_connected_players()) do
+        on_player_leave(player);
+    end
 end)
+
 --globalstep per aggiornare i componenti grafici
 minetest.register_globalstep(function(dtime)
     local containers = minebase.screen.containers;
@@ -42,6 +71,7 @@ minetest.register_globalstep(function(dtime)
         end
     end
 end)
+
 --Creo le funzioni base per il lavoro per l'HUD a tempo
 minetest.register_globalstep(function(dtime)
     local tx = minebase.HUD.tx;
@@ -64,16 +94,13 @@ minetest.register_globalstep(function(dtime)
 end);
 
 -- EFFECTS
---Giocatore si unisce
-minetest.register_on_joinplayer(function(player, last_login)
-    minebase.effects.functions.addEffectsToPlayer(player);
-end);
 --Giocatore respawn
-minetest.register_on_respawnplayer(function(player)
+minetest.register_on_dieplayer(function(player)
     minebase.effects.functions.removeAll(player);
     minebase.effects.functions.addEffectsToPlayer(player);
 end)
-minetest.register_on_leaveplayer(function(player, timed_out)
-    minebase.effects.functions.removeAll(player);
-    minebase.effects.players[player] = nil;
-end)
+
+--minetest.register_on_leaveplayer(function(player, timed_out)
+--    minebase.effects.functions.removeAll(player);
+--    minebase.effects.players[player] = nil;
+--end)
