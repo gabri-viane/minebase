@@ -135,6 +135,19 @@ minebase.commands.functions.addCommand("minebase", "test", {
             elseif params.command == "imgread" then
                 local width, height = GetImageWidthHeight(minetest.get_modpath("minebase") .. "/textures/test1.png");
                 minetest.log("Dimensions:" .. width .. "x" .. height);
+            elseif params.command == "pt" then
+                minebase.utils._p(player);
             end
         end
+    end)
+
+
+minebase.commands.functions.addCommand("minebase", "lookingat", {}, {},
+    function(player, params)
+        local found = minebase.utils.is_looking_at(minetest.get_player_by_name(player));
+        if found.found then
+            minetest.set_node(found.pos, { name = "default:stone" });
+            return found.node.name;
+        end
+        return "Not found";
     end)

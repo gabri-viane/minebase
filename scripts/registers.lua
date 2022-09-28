@@ -42,6 +42,9 @@ end);
 minetest.register_on_joinplayer(function(player, last_login)
     minebase.screen:enableScreen(player); --Enable Screen for player
     minebase.HUD.complex:newEffectList(player, 1); --Add effects list to player (empty)
+    if minebase.statics.settings.desc_locator then
+        minebase.HUD.complex:newPointInfoText(player); --Add info box, when pointing node
+    end
     minebase.effects.functions.addEffectsToPlayer(player); --Enable Effects for player
     minebase.storage:loadData(player); --Load player stored data
 end);
